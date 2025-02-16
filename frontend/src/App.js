@@ -16,12 +16,18 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+
+        {/* Student routes */}
         <Route path="/student/dashboard" element={<StudentDashboard />} />
-        <Route path="/lecturer/dashboard" element={<LecturerDashboard />} />
         <Route path="/messaging" element={<Messaging />} />
-        <Route path="/tasks" element={<Tasks />} />
-        <Route path="/schedule" element={<Scheduling />} />
+        <Route path="/student/tasks" element={<Tasks />} />
+        <Route path="/student/schedule" element={<Scheduling />} />
+
+        {/*Lecturer routes*/}
+        <Route path="/lecturer/dashboard" element={<LecturerDashboard />} />
+
         <Route path="/repository" element={<Repository />} />
+
       </Routes>
     </Router>
   );
