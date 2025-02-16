@@ -5,8 +5,14 @@ function Login() {
   const navigate = useNavigate(); // Hook for navigating between pages
 
   const handleSelect = (role) => {
-    localStorage.setItem("userRole", role); // Store selection for later
-    navigate("/dashboard"); // Redirect to dashboard
+    localStorage.setItem("userRole", role); // Save role in localStorage
+
+    // Redirect to the correct dashboard
+    if (role === "student") {
+      navigate("/studentDashboard");
+    } else if (role === "lecturer") {
+      navigate("/lecturerDashboard");
+    }
   };
 
   return (
@@ -23,6 +29,7 @@ function Login() {
       </div>
     </div>
   );
+
 }
 
 export default Login;

@@ -1,0 +1,32 @@
+.dashboard-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  h2 {
+    color: #A53838;
+  }
+  
+  .dashboard-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .dashboard-card {
+    background: #A53838;
+    color: white;
+    padding: 20px;
+    margin: 10px;
+    width: 250px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .dashboard-card:hover {
+    opacity: 0.8;
+  }
+  
