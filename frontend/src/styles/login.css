@@ -1,0 +1,41 @@
+.login-container {
+    text-align: center;
+    margin-top: 100px;
+  }
+  
+  h2 {
+    color: #A53838;
+  }
+  
+  p {
+    font-size: 18px;
+  }
+  
+  .login-buttons {
+    margin-top: 20px;
+  }
+  
+  .student-btn, .lecturer-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    margin: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .student-btn {
+    background: #A53838;
+    color: white;
+  }
+  
+  .lecturer-btn {
+    background: #A53838;
+    color: white;
+  }
+  
+  .student-btn:hover, .lecturer-btn:hover {
+    opacity: 0.8;
+  }
+  
