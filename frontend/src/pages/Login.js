@@ -9,9 +9,9 @@ function Login() {
 
     // Redirect to the correct dashboard
     if (role === "student") {
-      navigate("/studentDashboard");
+      navigate("/student/dashboard"); 
     } else if (role === "lecturer") {
-      navigate("/lecturerDashboard");
+      navigate("/lecturer/dashboard"); 
     }
   };
 

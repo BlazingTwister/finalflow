@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "../styles/dashboard.css";
+import "../../styles/dashboard.css";
 import { useState } from "react";
 
 function StudentDashboard() {

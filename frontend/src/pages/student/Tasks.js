@@ -1,4 +1,4 @@
-import "../styles/tasks.css";
+import "../../styles/tasks.css";
 
 function Tasks() {
   return (

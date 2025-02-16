@@ -1,4 +1,4 @@
-import "../styles/scheduling.css";
+import "../../styles/scheduling.css";
 
 function Scheduling() {
   return (

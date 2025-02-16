@@ -1,10 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
-import StudentDashboard from "./pages/StudentDashboard"; 
-import LecturerDashboard from "./pages/LecturerDashboard";
-import Messaging from "./pages/Messaging";
-import Tasks from "./pages/Tasks";
-import Scheduling from "./pages/Scheduling";
+
+import StudentDashboard from "./pages/student/StudentDashboard";
+import Messaging from "./pages/student/Messaging";
+import Tasks from "./pages/student/Tasks";
+import Scheduling from "./pages/student/Scheduling";
+
+import LecturerDashboard from "./pages/lecturer/LecturerDashboard";
+
 import Repository from "./pages/Repository"; 
 
 
@@ -13,8 +16,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/studentdashboard" element={<StudentDashboard />} />
-        <Route path="/lecturerDashboard" element={<LecturerDashboard />} />
+        <Route path="/student/dashboard" element={<StudentDashboard />} />
+        <Route path="/lecturer/dashboard" element={<LecturerDashboard />} />
         <Route path="/messaging" element={<Messaging />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/schedule" element={<Scheduling />} />
