@@ -1,6 +1,6 @@
 import "../../styles/tasks.css";
 
-function Tasks() {
+function StudentTasks() {
   return (
     <div className="tasks-container">
       <h2>Project Tasks</h2>
@@ -9,4 +9,4 @@ function Tasks() {
   );
 }
 
-export default Tasks;
+export default StudentTasks;

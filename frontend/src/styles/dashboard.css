@@ -1,184 +1,41 @@
 /* Layout */
 .dashboard-layout {
   display: flex;
-}
-
-/* Sidebar */
-.sidebar {
-  width: 250px;
-  height: 100vh;
-  background: #A53838;
-  color: white;
-  padding: 20px;
-  position: fixed;
-  left: 0;
-  top: 0;
-  transition: width 0.3s ease-in-out;
-}
-
-.sidebar.closed {
-  width: 50px;
-  overflow: hidden;
-}
-
-.sidebar-links {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar-links li {
-  padding: 10px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.sidebar-links li:hover {
-  background: #8f2f2f;
-}
-
-/* Toggle Button */
-.toggle-btn {
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  margin-bottom: 10px;
+  transition: margin-left 0.3s ease-in-out;
 }
 
 /* Main Content */
 .dashboard-main {
-  margin-left: 250px;
-  padding: 20px;
-  flex-grow: 1;
-}
-
-.dashboard-sections {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-}
-
-.dashboard-box {
-  background: #f5f5f5;
-  padding: 15px;
-  border-radius: 8px;
-  width: 48%;
-}
-
-.dashboard-box h3 {
-  color: #A53838;
-}
-
-/* Responsive Sidebar */
-@media (max-width: 768px) {
-  .sidebar {
-    width: 50px;
-  }
-
-  .sidebar.open {
-    width: 200px;
-  }
-
-  .dashboard-main {
-    margin-left: 50px;
-  }
-}
-/* Layout */
-.dashboard-layout {
-  display: flex;
-}
-
-/* Sidebar */
-.sidebar {
-  width: 200px;
-  height: 100vh;
-  background: #A53838;
-  color: white;
-  padding: 20px;
-  position: fixed;
-  left: 0;
-  top: 0;
-  transition: width 0.3s ease-in-out;
-}
-
-.sidebar.closed {
-  width: 50px;
-  overflow: hidden;
-}
-
-.sidebar-links {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar-links li {
-  padding: 10px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.sidebar-links li:hover {
-  background: #8f2f2f;
-}
-
-/* Toggle Button */
-.toggle-btn {
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-
-/* Main Content */
-.dashboard-main {
-  margin-left: 250px;
-  padding: 20px;
-  flex-grow: 1;
-}
-
-.dashboard-sections {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-}
-
-.dashboard-box {
-  background: #f5f5f5;
-  padding: 15px;
-  border-radius: 8px;
-  width: 48%;
-}
-
-.dashboard-box h3 {
-  color: #A53838;
-}
-
-/* Main Content Adjusts Based on Sidebar */
-.dashboard-main {
-  margin-left: 250px;
+  margin-left: 250px; /* Matches sidebar width */
   padding: 20px;
   flex-grow: 1;
   transition: margin-left 0.3s ease-in-out;
 }
 
-/* When Sidebar is Collapsed, Expand Content */
-.sidebar-closed .dashboard-main {
-  margin-left: 120px;
+.dashboard-sections {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
 }
 
-/* Responsive Sidebar */
+.dashboard-box {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  width: 48%;
+}
+
+.dashboard-box h3 {
+  color: #A53838;
+}
+
+/* When Sidebar is Collapsed */
+.sidebar-closed .dashboard-main {
+  margin-left: 100px;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-  .sidebar {
-    width: 50px;
-  }
-
-  .sidebar.open {
-    width: 200px;
-  }
-
   .dashboard-main {
     margin-left: 50px;
   }

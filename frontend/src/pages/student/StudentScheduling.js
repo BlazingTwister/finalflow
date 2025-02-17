@@ -1,6 +1,6 @@
 import "../../styles/scheduling.css";
 
-function Scheduling() {
+function StudentScheduling() {
   return (
     <div className="scheduling-container">
       <h2>Schedule a Meeting</h2>
@@ -9,4 +9,4 @@ function Scheduling() {
   );
 }
 
-export default Scheduling;
+export default StudentScheduling;

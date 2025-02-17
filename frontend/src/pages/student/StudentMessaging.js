@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../../styles/messaging.css";
 
-function Messaging() {
+function StudentMessaging() {
   const [messages, setMessages] = useState([
     { sender: "supervisor", text: "Hello, how is your capstone project going?" },
     { sender: "student", text: "It's going well! I have some questions about the requirements." }
@@ -40,4 +40,4 @@ function Messaging() {
   );
 }
 
-export default Messaging;
+export default StudentMessaging;
