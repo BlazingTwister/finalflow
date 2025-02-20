@@ -43,7 +43,9 @@ function App() {
         <Route path="/" element={<Login />} />
 
         {/* Repository (Shared Page) */}
-        <Route path="/repository" element={<Repository />} />
+        <Route path="/repository" element={<LayoutWrapper />}>
+            <Route index element={<Repository />} />
+        </Route>
         
         {/* Student Routes */}
         <Route path="/student/*" element={<LayoutWrapper />}>
