@@ -1,9 +1,109 @@
+/* Scheduling Page Layout */
 .scheduling-container {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  h2 {
-    color: #A53838;
-  }
-  
+  padding: 20px;
+  text-align: center;
+}
+
+.schedule-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-top: 20px;
+}
+
+/* Calendar */
+.calendar {
+  width: 50%;
+  background: #A53838;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.calendar-day {
+  padding: 15px; /* Increase padding for a square shape */
+  background: #A53838;
+  color: white;
+  border: 2px solid white; /* Keeps a clean border */
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 5px; /* Slightly rounded corners for a smooth look */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1; /* Ensures the day cells are squares */
+}
+
+.calendar-day.meeting-day {
+  background: white;
+  color: #A53838;
+  font-weight: bold;
+}
+
+.calendar-day:hover,
+.calendar-day:active {
+  background: white;
+  color: #A53838;
+}
+
+/* Upcoming Meetings */
+.upcoming-meetings {
+  width: 45%;
+  background: white;
+  color: #A53838;
+  border: 2px solid #A53838;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Pop-up Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+}
+
+.popup ul {
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+}
+
+.popup ul li {
+  margin: 10px 0;
+}
+
+.close-btn {
+  background: red;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
