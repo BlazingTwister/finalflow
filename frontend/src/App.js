@@ -50,7 +50,7 @@ function App() {
             <Route path="dashboard" element={<StudentDashboard />} />
             <Route path="messaging" element={<StudentMessaging />} />
             <Route path="tasks" element={<StudentTasks />} />
-            <Route path="Meetings" element={<StudentScheduling />} />
+            <Route path="meetings" element={<StudentScheduling />} />
         </Route>
 
 
@@ -58,7 +58,7 @@ function App() {
         <Route path="/lecturer/*" element={<LayoutWrapper />}>
             <Route path="dashboard" element={<LecturerDashboard />} />
             <Route path="messaging" element={<LecturerMessaging />} />
-            <Route path="Meetings" element={<LecturerScheduling />} />
+            <Route path="meetings" element={<LecturerScheduling />} />
             <Route path="submissions" element={<LecturerSubmissions />} />
         </Route>
 
