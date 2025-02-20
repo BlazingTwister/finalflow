@@ -39,9 +39,12 @@ function App() {
     <Router>
       <Routes>
 
-        {/* Index Route */}
+        {/* Index (Shared Page) */}
         <Route path="/" element={<Login />} />
 
+        {/* Repository (Shared Page) */}
+        <Route path="/repository" element={<Repository />} />
+        
         {/* Student Routes */}
         <Route path="/student/*" element={<LayoutWrapper />}>
             <Route path="dashboard" element={<StudentDashboard />} />
@@ -71,8 +74,6 @@ function App() {
         </Route>
 
 
-        {/* Repository (Shared Page) */}
-        <Route path="/repository" element={<Repository />} />
 
 
       </Routes>
