@@ -11,6 +11,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         setUserRole(role);
     }, []);
 
+    //Sidebar for Students
     const studentLinks = [
         { icon: "🏠", text: "Dashboard", path: "/student/dashboard" },
         { icon: "📩", text: "Messages", path: "/student/messaging" },
@@ -19,6 +20,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { icon: "📚", text: "Capstone Repository", path: "/repository" }
     ];
 
+    //Sidebar for Lecturers
     const lecturerLinks = [
         { icon: "🏠", text: "Dashboard", path: "/lecturer/dashboard" },
         { icon: "📩", text: "Messages", path: "/lecturer/messaging" },
@@ -27,7 +29,17 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { icon: "📚", text: "Capstone Repository", path: "/repository" }
     ];
 
-    const links = userRole === "student" ? studentLinks : lecturerLinks;
+    //Sidebar for Admin
+    const adminLinks = [
+        { icon: "🏠", text: "Dashboard", path: "/admin/dashboard" },
+        { icon: "👥", text: "Manage Users", path: "/admin/manage-users" },
+        { icon: "📩", text: "User Requests", path: "/admin/user-requests" },
+        { icon: "📚", text: "Manage Repository", path: "/admin/manage-repository" },
+        { icon: "📊", text: "Reports", path: "/admin/reports" },
+        { icon: "⚙️", text: "Settings", path: "/admin/settings" }
+    ];
+
+    const links = userRole === "student" ? studentLinks : userRole === "lecturer" ? lecturerLinks : adminLinks;
 
     return (
         <div className={`sidebar ${isOpen ? "open" : "closed"}`}>
