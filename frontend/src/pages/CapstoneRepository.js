@@ -7,7 +7,7 @@ function CapstoneRepository() {
     const [projects, setProjects] = useState([
         { id: 1, title: "AI-Based Crop Detection", author: "John Doe", year: 2023, description: "Using AI to detect crop diseases." },
         { id: 2, title: "Smart Traffic System", author: "Jane Smith", year: 2022, description: "Automated traffic control using sensors." },
-        { id: 3, title: "Blockchain for Secure Voting", author: "Alice Johnson", year: 2021, description: "A secure voting system using blockchain." }
+        { id: 3, title: "Blockchain for Secure Voting", author: "Nelly Johnson", year: 2021, description: "A secure voting system using blockchain." }
     ]);
 
     // Filter projects based on search input
