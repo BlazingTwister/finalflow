@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import "../../styles/manageRepository.css";
+import "../styles/capstoneRepository.css";
 
-function ManageRepository() {
+function CapstoneRepository() {
     const [search, setSearch] = useState("");
     const [selectedProject, setSelectedProject] = useState(null); // For viewing project details
     const [projects, setProjects] = useState([
-        { id: 1, title: "AI-Based Crop Detection", author: "Mel", year: 2023, description: "Using AI to detect crop diseases." },
-        { id: 2, title: "Smart Traffic System", author: "Stacy", year: 2022, description: "Automated traffic control using sensors." },
-        {id: 3, title: "Blockchain for Secure Voting", author: "Nelly", year: 2021, description: "A secure voting system using blockchain." },
+        { id: 1, title: "AI-Based Crop Detection", author: "John Doe", year: 2023, description: "Using AI to detect crop diseases." },
+        { id: 2, title: "Smart Traffic System", author: "Jane Smith", year: 2022, description: "Automated traffic control using sensors." },
+        { id: 3, title: "Blockchain for Secure Voting", author: "Nelly Johnson", year: 2021, description: "A secure voting system using blockchain." }
     ]);
 
     // Filter projects based on search input
@@ -19,7 +19,7 @@ function ManageRepository() {
 
     return (
         <div className="dashboard-main">
-            <h1>📚 Manage Capstone Repository</h1>
+            <h1>📚 Capstone Repository</h1>
 
             {/* Search Bar */}
             <input
@@ -29,8 +29,6 @@ function ManageRepository() {
                 onChange={(e) => setSearch(e.target.value)}
                 className="search-bar"
             />
-
-            <button className="add-btn">➕ Add New Project</button>
 
             {/* Project List */}
             <table className="repository-table">
@@ -51,8 +49,7 @@ function ManageRepository() {
                                 <td>{project.year}</td>
                                 <td>
                                     <button className="view-btn" onClick={() => setSelectedProject(project)}>🔍 View</button>
-                                    <button className="edit-btn">✏️ Edit</button>
-                                    <button className="delete-btn">🗑️ Remove</button>
+                                    <button className="download-btn">⬇ Download</button>
                                 </td>
                             </tr>
                         ))
@@ -80,4 +77,4 @@ function ManageRepository() {
     );
 }
 
-export default ManageRepository;
+export default CapstoneRepository;
