@@ -6,7 +6,7 @@
 
 /* Main Content */
 .dashboard-main {
-  margin-left: 250px; /* Matches sidebar width */
+  margin-left: 100px; /* Matches sidebar width */
   padding: 20px;
   flex-grow: 1;
   transition: margin-left 0.3s ease-in-out;

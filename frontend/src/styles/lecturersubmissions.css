@@ -1,0 +1,95 @@
+/* Main layout */
+.lecturer-submissions {
+  padding: 20px;
+  text-align: center;
+}
+
+.students-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Student Card */
+.student-card {
+  background: white;
+  color: #A53838;
+  border: 2px solid #A53838;
+  padding: 15px;
+  width: 250px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+  background: lightgray;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.progress {
+  height: 100%;
+  background: #A53838;
+}
+
+/* View Button */
+.view-btn {
+  background: #A53838;
+  color: white;
+  border: 2px solid #A53838;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.view-btn:hover,
+.view-btn:active {
+  background: white;
+  color: #A53838;
+}
+
+/* Popup */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+}
+
+.popup ul {
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+}
+
+.popup ul li {
+  margin: 10px 0;
+}
+
+.close-btn {
+  background: #A53838;
+  color: white;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
