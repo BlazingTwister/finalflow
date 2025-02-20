@@ -35,8 +35,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { icon: "👥", text: "Manage Users", path: "/admin/manage-users" },
         { icon: "📩", text: "User Requests", path: "/admin/user-requests" },
         { icon: "📚", text: "Manage Repository", path: "/admin/manage-repository" },
-        { icon: "📊", text: "Reports", path: "/admin/reports" },
-        { icon: "⚙️", text: "Settings", path: "/admin/settings" }
+        //{ icon: "📊", text: "Reports", path: "/admin/reports" },
+        //{ icon: "⚙️", text: "Settings", path: "/admin/settings" }
     ];
 
     const links = userRole === "student" ? studentLinks : userRole === "lecturer" ? lecturerLinks : adminLinks;
