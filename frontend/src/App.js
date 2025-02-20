@@ -11,7 +11,7 @@ import StudentScheduling from "./pages/student/StudentScheduling";
 //Lecturer imports
 import LecturerDashboard from "./pages/lecturer/LecturerDashboard";
 import LecturerMessaging from "./pages/lecturer/LecturerMessaging";
-import LecturerSchedule from "./pages/lecturer/LecturerSchedule";
+import LecturerScheduling from "./pages/lecturer/LecturerScheduling";
 import LecturerSubmissions from "./pages/lecturer/LecturerSubmissions";
 
 //Admin imports
@@ -52,7 +52,7 @@ function App() {
             <Route path="dashboard" element={<StudentDashboard />} />
             <Route path="messaging" element={<StudentMessaging />} />
             <Route path="tasks" element={<StudentTasks />} />
-            <Route path="schedule" element={<StudentScheduling />} />
+            <Route path="meetings" element={<StudentScheduling />} />
         </Route>
 
 
@@ -60,7 +60,7 @@ function App() {
         <Route path="/lecturer/*" element={<LayoutWrapper />}>
             <Route path="dashboard" element={<LecturerDashboard />} />
             <Route path="messaging" element={<LecturerMessaging />} />
-            <Route path="schedule" element={<LecturerSchedule />} />
+            <Route path="meetings" element={<LecturerScheduling />} />
             <Route path="submissions" element={<LecturerSubmissions />} />
         </Route>
 
