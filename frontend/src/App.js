@@ -23,7 +23,7 @@ import Reports from "./pages/admin/Reports";
 import Settings from "./pages/admin/Settings";
 
 //Repository
-import Repository from "./pages/Repository"; 
+import CapstoneRepository from "./pages/CapstoneRepository"; 
 
 //Components
 import Layout from "./components/Layout"; // Import Layout
@@ -44,7 +44,7 @@ function App() {
 
         {/* Repository (Shared Page) */}
         <Route path="/repository" element={<LayoutWrapper />}>
-            <Route index element={<Repository />} />
+            <Route index element={<CapstoneRepository />} />
         </Route>
         
         {/* Student Routes */}
