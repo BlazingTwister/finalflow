@@ -15,8 +15,6 @@ function LecturerDashboard() {
 
   return (
     <div className={`dashboard-layout ${isSidebarOpen ? "" : "sidebar-closed"}`}>
-      {/* Sidebar Component */}
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} userRole={userRole} />
 
       {/* Main Dashboard Content */}
       <main className="dashboard-main">
