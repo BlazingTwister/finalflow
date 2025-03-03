@@ -28,6 +28,9 @@ import CapstoneRepository from "./pages/CapstoneRepository";
 //Components
 import Layout from "./components/Layout"; // Import Layout
 
+//Testing
+import Users from './components/Users'; //To test connection to laravel
+
 const LayoutWrapper = () => (
   <Layout>
     <Outlet /> {/* This ensures child routes are rendered inside Layout */}
@@ -40,7 +43,9 @@ function App() {
       <Routes>
 
         {/* Index (Shared Page) */}
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Login />} /> 
+
+        {/* <Route path="/" element={<Users />} />  Tested connection between react and laravel*/}
 
         {/* Repository (Shared Page) */}
         <Route path="/repository" element={<LayoutWrapper />}>
@@ -74,9 +79,6 @@ function App() {
             <Route path="reports" element={<Reports />} />
             <Route path="settings" element={<Settings />} />
         </Route>
-
-
-
 
       </Routes>
     </Router>

@@ -15,20 +15,18 @@ return [
     |
     */
 
-    'paths' => ['*'],
+    'paths' => ['api/*'], // Paths to enable CORS for
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['*'], // Allowed HTTP methods
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+    'allowed_origins' => ['http://localhost:3000'], // Allowed origins (React app)
 
-    'allowed_origins_patterns' => [],
+    'allowed_headers' => ['*'], // Allowed headers
 
-    'allowed_headers' => ['*'],
+    'exposed_headers' => [], // Headers to expose
 
-    'exposed_headers' => [],
+    'max_age' => 0, // Max age for preflight requests
 
-    'max_age' => 0,
-
-    'supports_credentials' => true,
+    'supports_credentials' => false, // Allow credentials (cookies, etc.)
 
 ];
