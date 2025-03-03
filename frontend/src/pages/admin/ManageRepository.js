@@ -10,7 +10,7 @@ function ManageRepository() {
         {id: 3, title: "Blockchain for Secure Voting", author: "Nelly", year: 2021, description: "A secure voting system using blockchain." },
     ]);
 
-    // Filter projects based on search input
+    // Filter projects based on search input 
     const filteredProjects = projects.filter(project =>
         project.title.toLowerCase().includes(search.toLowerCase()) ||
         project.author.toLowerCase().includes(search.toLowerCase()) ||

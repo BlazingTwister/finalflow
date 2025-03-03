@@ -26,7 +26,6 @@ function ManageUsers() {
                             <td>{user.email}</td>
                             <td>{user.role}</td>
                             <td>
-                                <button className="edit-btn">✏️ Edit</button>
                                 <button className="delete-btn">🗑️ Remove</button>
                             </td>
                         </tr>
