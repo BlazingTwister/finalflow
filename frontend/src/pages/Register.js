@@ -6,7 +6,8 @@ import '../styles/register.css';
 function Register() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        username: '',
+        fname: '',
+        lname: '',
         email: '',
         passwd: '',
         passwd_confirmation: '',
@@ -40,8 +41,15 @@ function Register() {
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
-                    name="username"
-                    placeholder="Username"
+                    name="fname"
+                    placeholder="First Name"
+                    onChange={handleChange}
+                    required
+                />
+                <input
+                    type="text"
+                    name="lname"
+                    placeholder="Last Name"
                     onChange={handleChange}
                     required
                 />

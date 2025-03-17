@@ -7,6 +7,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// CSRF Token Authentication
+Route::get('/csrf-token', function () {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
+
 
 //User Registeration
 use App\Http\Controllers\Auth\RegisteredUserController;
