@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*'], // Paths to enable CORS for
+    'paths' => ['api/*', 'sanctum/csrf-cookie'], // Paths to enable CORS for
 
     'allowed_methods' => ['*'], // Allowed HTTP methods
 
@@ -27,6 +27,6 @@ return [
 
     'max_age' => 0, // Max age for preflight requests
 
-    'supports_credentials' => false, // Allow credentials (cookies, etc.)
+    'supports_credentials' => true, // Allow credentials (cookies, etc.)
 
 ];

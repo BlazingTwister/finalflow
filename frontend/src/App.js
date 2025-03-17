@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Outlet } from "react-router-dom"; // Import Outlet
 import Login from "./pages/Login";
+import Register from "./pages/Register"; 
 
 //Student imports
 import StudentDashboard from "./pages/student/StudentDashboard";
@@ -45,7 +46,11 @@ function App() {
         {/* Index (Shared Page) */}
         <Route path="/" element={<Login />} /> 
 
-        {/* <Route path="/" element={<Users />} />  Tested connection between react and laravel*/}
+        {/* Login (Shared Page) */}
+        <Route path="/login" element={<Login />} /> 
+
+        {/* Register (Shared Page) */}
+        <Route path="/registeration" element={<Register />} />
 
         {/* Repository (Shared Page) */}
         <Route path="/repository" element={<LayoutWrapper />}>

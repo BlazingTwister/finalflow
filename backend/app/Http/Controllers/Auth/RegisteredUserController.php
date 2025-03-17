@@ -21,19 +21,29 @@ class RegisteredUserController extends Controller
     public function store(Request $request): Response
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'passwd' => ['required', 'confirmed', Rules\Password::defaults()],
+            'user_role' => 'required|in:student,lecturer,admin',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
+            'username' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->string('password')),
+            'passwd' => Hash::make($request->string('passwd')),
+            'user_role' => $request->user_role, // Changed from 'role'
+            'is_verified' => $request->user_role === 'student' ? true : false,
         ]);
 
         event(new Registered($user));
 
+        return response()->json([
+            'message' => 'Registration successful!',
+            'user' => $user,
+        ], 201);
+
+
+        
         Auth::login($user);
 
         return response()->noContent();

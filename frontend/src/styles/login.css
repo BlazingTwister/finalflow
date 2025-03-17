@@ -1,4 +1,4 @@
-.login-container {
+.login-container, .register-container {
     text-align: center;
     margin-top: 100px;
   }
@@ -11,7 +11,7 @@
     font-size: 18px;
   }
   
-  .login-buttons {
+  .login-buttons, .register-buttons {
     margin-top: 20px;
   }
   
