@@ -22,3 +22,10 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 use App\Http\Controllers\Auth\LoginController;
 
 Route::post('/login', [LoginController::class, 'store']);
+
+Route::get('/check-login', function (Request $request) {
+    if (session()->has('user')) {
+        return response()->json(['user' => session('user')], 200);
+    }
+    return response()->json(['error' => 'Not logged in'], 401);
+});

@@ -7,25 +7,55 @@ use App\Http\Requests\Auth\LoginRequest; // Import the LoginRequest
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+use App\Models\User;
+
 
 class LoginController extends Controller
 {
-    /**
+     /**
      * Handle an incoming login request.
      */
-    public function store(LoginRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        // Authenticate the user using the LoginRequest
-        $request->authenticate();
+        // Validate input
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
-        // Regenerate the session ID for security
-        $request->session()->regenerate();
+        $credentials = $request->only('email', 'password');
 
-        // Return a JSON response
+        // Check if user exists
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user) {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+
+        // Verify password
+        if (!Hash::check($credentials['password'], $user->password)) {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+
+        // Store user in session
+        session(['user' => $user]);
+
+        // Determine redirection based on role
+        $redirectPath = match ($user->user_role) {
+            'admin' => '/admin/dashboard',
+            'lecturer' => '/lecturer/dashboard',
+            'student' => '/student/dashboard',
+            default => '/login',
+        };
+
+        // Return response with token, user data, and redirection path
         return response()->json([
             'message' => 'Login successful!',
-            'user' => Auth::user(),
-        ]);
+            'user' => $user,
+            'redirect' => $redirectPath,
+        ], 200);
     }
 
     /**
@@ -33,16 +63,9 @@ class LoginController extends Controller
      */
     public function destroy(Request $request): JsonResponse
     {
-        // Log the user out
-        Auth::guard('web')->logout();
+        // Remove user from session
+        session()->forget('user');
 
-        // Invalidate the session
-        $request->session()->invalidate();
-
-        // Regenerate the CSRF token
-        $request->session()->regenerateToken();
-
-        // Return a JSON response
         return response()->json([
             'message' => 'Logout successful!',
         ]);

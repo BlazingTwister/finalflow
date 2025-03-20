@@ -24,7 +24,18 @@ function Login() {
             await fetchCsrfToken(); // Fetch CSRF token first
             const response = await loginUser(formData); // Call the login API
             alert('Login successful!');
-            navigate('/dashboard'); // Redirect to the dashboard or home page
+            // Get the redirection path from API response
+            const redirectPath = response.redirect || "/dashboard";
+            
+            // Save user info and token in local storage
+            localStorage.setItem("token", response.token);
+            localStorage.setItem("userRole", response.user.user_role);
+
+            // Store user in local storage (since we aren't using tokens yet)
+            localStorage.setItem("user", JSON.stringify(response.user));
+            
+            // Redirect based on user role
+            navigate(redirectPath);
         } catch (error) {
             setError(error.response?.data?.message || 'Login failed.');
         }

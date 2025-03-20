@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
             'fname' => $request->fname,
             'lname' => $request->lname,
             'email' => $request->email,
-            'password' => Hash::make($request->passwd),
+            'password' => Hash::make($request->password),
             'user_role' => $request->user_role, // Changed from 'role'
             'is_verified' => $request->user_role === 'student' ? true : false,
         ]);
