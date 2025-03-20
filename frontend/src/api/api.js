@@ -19,14 +19,19 @@ export const fetchCsrfToken = async () => {
 export const registerUser = async (formData) => {
     try {
         await fetchCsrfToken(); // Fetch CSRF token first
-        const response = await api.post('/api/register', {
-            fname: formData.fname,
-            lname: formData.lname,
-            email: formData.email,
-            passwd: formData.passwd,
-            passwd_confirmation: formData.passwd_confirmation,
-            user_role: formData.user_role,
-        });
+        const response = await api.post('/api/register', formData);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
+// Login user
+export const loginUser = async (formData) => {
+    try {
+        await fetchCsrfToken(); // Fetch CSRF token first
+        const response = await api.post('/api/login', formData);
         return response.data;
     } catch (error) {
         throw error;

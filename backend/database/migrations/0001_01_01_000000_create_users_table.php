@@ -16,7 +16,7 @@ return new class extends Migration
         $table->string('fname')->unique(); // first name
         $table->string('lname')->unique(); // last name
         $table->string('email')->unique(); // User email
-        $table->string('passwd'); // User password
+        $table->string('password'); // User password
         $table->enum('user_role', ['student', 'lecturer', 'admin'])->default('student'); // User role
         $table->boolean('is_verified')->default(false); // User is verified
         $table->timestamps();

@@ -9,8 +9,8 @@ function Register() {
         fname: '',
         lname: '',
         email: '',
-        passwd: '',
-        passwd_confirmation: '',
+        password: '',
+        password_confirmation: '',
         user_role: 'student',
     });
 
@@ -62,14 +62,14 @@ function Register() {
                 />
                 <input
                     type="password"
-                    name="passwd"
+                    name="password"
                     placeholder="Password"
                     onChange={handleChange}
                     required
                 />
                 <input
                     type="password"
-                    name="passwd_confirmation"
+                    name="password_confirmation"
                     placeholder="Confirm Password"
                     onChange={handleChange}
                     required

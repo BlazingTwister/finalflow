@@ -1,41 +1,59 @@
-import { useNavigate } from "react-router-dom";
-import "../styles/login.css";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { loginUser, fetchCsrfToken } from '../api/api'; // Import API functions
+import '../styles/login.css';
 
 function Login() {
-  const navigate = useNavigate(); // Hook for navigating between pages
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
 
-  const handleSelect = (role) => {
-    localStorage.setItem("userRole", role); // Save role in localStorage
+    const [error, setError] = useState(null);
 
-    // Redirect to the correct dashboard
-    if (role === "student") {
-        navigate("/student/dashboard"); 
-      } else if (role === "lecturer") {
-        navigate("/lecturer/dashboard"); 
-      } else if (role === "admin") {
-        navigate("/admin/dashboard"); 
-      }
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+
+        try {
+            await fetchCsrfToken(); // Fetch CSRF token first
+            const response = await loginUser(formData); // Call the login API
+            alert('Login successful!');
+            navigate('/dashboard'); // Redirect to the dashboard or home page
+        } catch (error) {
+            setError(error.response?.data?.message || 'Login failed.');
+        }
     };
 
     return (
-      <div className="login-container">
-        <h2>Welcome to the Capstone System</h2>
-        <p>Select your role to continue:</p>
-
-        <div className="login-buttons">
-          <button className="admin-btn" onClick={() => handleSelect("admin")}>
-            I am Admin
-          </button>
-          <button className="student-btn" onClick={() => handleSelect("student")}>
-            I am a Student
-          </button>
-          <button className="lecturer-btn" onClick={() => handleSelect("lecturer")}>
-            I am a Lecturer
-          </button>
+        <div className="login-container">
+            <h2>Login</h2>
+            {error && <p className="error">{error}</p>}
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    onChange={handleChange}
+                    required
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    onChange={handleChange}
+                    required
+                />
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="/registeration">Register</a></p>
         </div>
-      </div>
     );
-
-  }
+}
 
 export default Login;

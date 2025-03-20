@@ -17,3 +17,8 @@ Route::get('/csrf-token', function () {
 use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::post('/register', [RegisteredUserController::class, 'store']);
+
+//User Login
+use App\Http\Controllers\Auth\LoginController;
+
+Route::post('/login', [LoginController::class, 'store']);
