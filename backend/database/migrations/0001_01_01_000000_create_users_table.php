@@ -10,13 +10,18 @@ return new class extends Migration
      * To test connection between Laravel and react:
      */
     public function up()
-    {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('username');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('users', function (Blueprint $table) {
+        $table->id();
+        $table->string('fname')->unique(); // first name
+        $table->string('lname')->unique(); // last name
+        $table->string('email')->unique(); // User email
+        $table->string('password'); // User password
+        $table->enum('user_role', ['student', 'lecturer', 'admin'])->default('student'); // User role
+        $table->boolean('is_verified')->default(false); // User is verified
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.

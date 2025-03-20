@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 class LoginRequest extends FormRequest
 {
     /**
@@ -41,14 +44,37 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        // 🛠 Debugging: Log input data
+        \Log::info('Login attempt:', [
+            'email' => $this->input('email'),
+            'password' => $this->input('password'),
+        ]);
 
+        // Check if the email exists in the database
+        $user = User::where('email', $this->input('email'))->first();
+
+        if (!$user) {
+            \Log::error('Login failed: Email not found.');
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
+        // 🛠 Debugging: Check if passwords match
+        if (!Hash::check($this->input('password'), $user->password)) {
+            \Log::error('Login failed: Password mismatch.', [
+                'entered_password' => $this->input('password'),
+                'stored_hashed_password' => $user->password,
+            ]);
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+
+        // ✅ Manually log the user in since Auth::attempt() does not work with manually checked passwords
+        Auth::login($user);
+
+        // If login is successful
         RateLimiter::clear($this->throttleKey());
     }
 

@@ -20,6 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         ]);
 
+        $middleware->web(append: [
+            \Illuminate\Session\Middleware\StartSession::class, 
+        ]);
+
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
