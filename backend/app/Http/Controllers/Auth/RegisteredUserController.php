@@ -18,8 +18,9 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): Response
+    public function store(Request $request): JsonResponse /** Works, but Still gives return type error? */
     {
+        /**Validate User Input */
         $request->validate([
             'fname' => ['required', 'string', 'max:255'],
             'lname' => ['required', 'string', 'max:255'],
@@ -28,11 +29,12 @@ class RegisteredUserController extends Controller
             'user_role' => 'required|in:student,lecturer,admin',
         ]);
 
+        /**Create User */
         $user = User::create([
             'fname' => $request->fname,
             'lname' => $request->lname,
             'email' => $request->email,
-            'passwd' => Hash::make($request->string('passwd')),
+            'passwd' => Hash::make($request->passwd),
             'user_role' => $request->user_role, // Changed from 'role'
             'is_verified' => $request->user_role === 'student' ? true : false,
         ]);
@@ -44,10 +46,5 @@ class RegisteredUserController extends Controller
             'user' => $user,
         ], 201);
 
-
-        
-        Auth::login($user);
-
-        return response()->noContent();
     }
 }

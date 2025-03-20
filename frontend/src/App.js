@@ -44,7 +44,7 @@ function App() {
       <Routes>
 
         {/* Index (Shared Page) */}
-        <Route path="/" element={<Login />} /> 
+        <Route path="/" element={<Register />} /> 
 
         {/* Login (Shared Page) */}
         <Route path="/login" element={<Login />} /> 
