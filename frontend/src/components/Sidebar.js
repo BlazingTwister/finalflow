@@ -13,10 +13,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
     //Sidebar for Students
     const studentLinks = [
-        { icon: "🏠", text: "Dashboard", path: "/student/dashboard" },
-        { icon: "📩", text: "Messages", path: "/student/messaging" },
-        { icon: "📌", text: "Project Tasks", path: "/student/tasks" },
-        { icon: "📅", text: "Meetings", path: "/student/meetings" },
+        { icon: "🏠︎", text: "Dashboard", path: "/student/dashboard" },
+        { icon: "✉︎", text: "Messages", path: "/student/messaging" },
+        { icon: "🗎", text: "Project Tasks", path: "/student/tasks" },
+        { icon: "𝄜 ", text: "Meetings", path: "/student/meetings" },
         { icon: "📚", text: "Capstone Repository", path: "/repository" }
     ];
 
@@ -25,18 +25,16 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { icon: "🏠", text: "Dashboard", path: "/lecturer/dashboard" },
         { icon: "📩", text: "Messages", path: "/lecturer/messaging" },
         { icon: "📂", text: "Student Submissions", path: "/lecturer/submissions" },
-        { icon: "📅", text: "Meetings", path: "/lecturer/meetings" },
-        { icon: "📚", text: "Capstone Repository", path: "/repository" }
+        { icon: "📅", text: "Meetings", path: "/lecturer/meetings" }
     ];
 
     //Sidebar for Admin
     const adminLinks = [
         { icon: "🏠", text: "Dashboard", path: "/admin/dashboard" },
         { icon: "👥", text: "Manage Users", path: "/admin/manage-users" },
-        { icon: "📩", text: "User Requests", path: "/admin/user-requests" },
         { icon: "📚", text: "Manage Repository", path: "/admin/manage-repository" },
-        //{ icon: "📊", text: "Reports", path: "/admin/reports" },
-        //{ icon: "⚙️", text: "Settings", path: "/admin/settings" }
+        { icon: "📊", text: "Reports", path: "/admin/reports" },
+        { icon: "⚙️", text: "Settings", path: "/admin/settings" }
     ];
 
     const links = userRole === "student" ? studentLinks : userRole === "lecturer" ? lecturerLinks : adminLinks;
@@ -49,11 +47,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <ul>
                 {links.map(({ icon, text, path }) => (
                     <li key={text} onClick={() => navigate(path)}>
-                        <span className="icon">{icon}</span>
-                        {isOpen && <span className="text">{text}</span>}
+                        {!isOpen && <span className="icon">{icon}</span>} {/* Show icon ONLY when collapsed */}
+                        {isOpen && <span className="text">{text}</span>}   {/* Show text ONLY when expanded */}
                     </li>
                 ))}
             </ul>
+
         </div>
     );
 };

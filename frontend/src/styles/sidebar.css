@@ -16,11 +16,11 @@
 
 /* Sidebar Layout */
 .sidebar {
-    width: 200px;
+    width: 250px;
     height: 100vh;
     background: #A53838;
     color: white;
-    padding: 20px;
+    padding: 0px;
     position: fixed;
     left: 0;
     top: 0;
@@ -28,7 +28,7 @@
 }
 
 .sidebar.closed {
-    width: 50px;
+    width: 80px;
     overflow: hidden;
 }
 
@@ -42,18 +42,19 @@
 .sidebar li {
     padding: 10px;
     cursor: pointer;
-    background: white; /* White highlight */
-    color: #A53838; /* Sidebar red text */
+    background: #A53838; /* White highlight */
+    color: white; /* Sidebar red text */
     margin-bottom: 8px; /* Spacing between items */
-    border-radius: 5px; /* Rounded corners */
+    border-radius: 0px; /* Rounded corners */
     transition: background 0.3s, color 0.3s;
     text-align: center;
     font-weight: bold;
+    font-size: large;
 }
 
 .sidebar li:hover {
-    background: #8f2f2f;
-    color: white;
+    background: white;
+    color: #8f2f2f;
 }
 
 /* Toggle Button */
@@ -73,6 +74,21 @@
     }
 
     .sidebar.open {
-        width: 200px;
+        width: 250px;
     }
+}
+
+/* Hide icons by default */
+.sidebar .icon {
+    display: none;
+}
+
+/* Show icons ONLY when sidebar is collapsed */
+.sidebar.closed .icon {
+    display: inline-block;
+}
+
+/* Hide text when sidebar is collapsed */
+.sidebar.closed .text {
+    display: none;
 }
