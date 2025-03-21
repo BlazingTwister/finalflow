@@ -1,105 +1,146 @@
-/* Tasks Page Styling */
 .tasks-container {
-  max-width: 800px;
-  margin: 30px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-.tasks-container h2 {
-  text-align: center;
-  color: #A53838;
-  margin-bottom: 20px;
+/* Header */
+h2 {
+    text-align: center;
 }
 
-/* Add Task Section */
-.add-task {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+/* Add Task Button - Improved Styling */
+.add-task-btn {
+    background: #A53838; /* Adjusted to match theme */
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 15px;
+    display: inline-block;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.add-task input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
+.add-task-btn:hover {
+    background: #8F2F2F; /* Darker shade for hover */
+    transform: scale(1.05);
 }
 
-.add-task button {
-  background-color: #A53838;
-  color: white;
-  border: none;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
+/* Task List - Flexbox for wrapping */
+.task-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 0;
 }
 
-.add-task button:hover {
-  background-color: #8f2f2f;
+/* Task Box */
+.task-item {
+    flex: 1 1 calc(25% - 15px);
+    min-width: 180px;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, background 0.3s;
+    text-align: left;
 }
 
-/* Task List */
-ul {
-  list-style: none;
-  padding: 0;
+.task-item:hover {
+    transform: scale(1.03);
+    background: #eef1f5;
 }
 
-li {
-  background: #f9f9f9;
-  margin: 10px 0;
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 5px;
-  transition: 0.3s;
+/* Task Info */
+.task-info {
+    flex-grow: 1;
 }
 
-li:hover {
-  background: #f0e1e1;
+/* Completed Tag */
+.completed-tag {
+    background: #28a745;
+    color: white;
+    padding: 3px 7px;
+    font-size: 0.75em;
+    border-radius: 5px;
+    margin-left: 10px;
 }
 
-/* Task Action Buttons */
-button {
-  padding: 8px 12px;
-  font-size: 14px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: 0.3s;
+/* Due Date */
+.due-date {
+    display: block;
+    font-size: 0.85em;
+    color: #555;
+    margin-top: 5px;
 }
 
-button:first-child {
-  background: #28a745; /* Green for completion */
-  color: white;
+/* Task Actions */
+.task-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 8px;
 }
 
-button:first-child:hover {
-  background: #218838;
+/* Complete Button - Updated to match theme */
+.complete-btn {
+    background: #A53838; /* Adjusted to theme */
+    border: none;
+    padding: 5px 8px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    flex: 1;
+    font-size: 0.85em;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
 }
 
-button:last-child {
-  background: #dc3545; /* Red for delete */
-  color: white;
+.complete-btn:hover {
+    background: #8F2F2F; /* Darker hover effect */
+    transform: scale(1.05);
 }
 
-button:last-child:hover {
-  background: #c82333;
+/* Delete Button */
+.delete-btn {
+    background: #dc3545;
+    border: none;
+    padding: 5px 8px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    flex: 1;
+    font-size: 0.85em;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+    transform: scale(1.05);
 }
 
 /* Responsive Design */
-@media (max-width: 600px) {
-  .tasks-container {
-      width: 90%;
-  }
+@media (max-width: 768px) {
+    .task-item {
+        flex: 1 1 calc(33.33% - 15px);
+    }
+}
 
-  .add-task {
-      flex-direction: column;
-  }
+@media (max-width: 480px) {
+    .task-item {
+        flex: 1 1 calc(50% - 15px);
+    }
 }
