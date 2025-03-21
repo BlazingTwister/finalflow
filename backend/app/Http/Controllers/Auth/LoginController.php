@@ -25,22 +25,12 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        $credentials = $request->only('email', 'password');
-
-        // Check if user exists
-        $user = User::where('email', $credentials['email'])->first();
-
-        if (!$user) {
+        if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
-
-        // Verify password
-        if (!Hash::check($credentials['password'], $user->password)) {
-            return response()->json(['error' => 'Invalid credentials'], 401);
-        }
-
-        // Store user in session
-        session(['user' => $user]);
+    
+        $user = Auth::user();
+        $token = $user->createToken('auth_token')->plainTextToken; // Generate token
 
         // Determine redirection based on role
         $redirectPath = match ($user->user_role) {
@@ -49,11 +39,11 @@ class LoginController extends Controller
             'student' => '/student/dashboard',
             default => '/login',
         };
-
-        // Return response with token, user data, and redirection path
+    
         return response()->json([
             'message' => 'Login successful!',
             'user' => $user,
+            'token' => $token,
             'redirect' => $redirectPath,
         ], 200);
     }

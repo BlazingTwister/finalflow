@@ -3,17 +3,24 @@ import "../../styles/dashboard.css";
 import { useEffect, useState } from "react";
 
 function StudentDashboard() {
-  const [userRole, setUserRole] = useState(null);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const role = localStorage.getItem("userRole");
-    setUserRole(role);
+
+    // Retrieve user details from localStorage
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // Parse JSON string to object
+    }
   }, []);
 
   return (
     <div className="dashboard-main">
-      <h2>Welcome, Student</h2>
+      
+      {/* Display user's name dynamically */}
+      <h2>Welcome, {user ? `${user.fname} ${user.lname}` : "Student"}</h2>
 
       {/* Upcoming Tasks & Meetings Section */}
       <div className="dashboard-sections">
