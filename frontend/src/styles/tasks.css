@@ -94,9 +94,8 @@ h2 {
     margin-top: 8px;
 }
 
-/* Complete Button - Updated to match theme */
 .complete-btn {
-    background: #A53838; /* Adjusted to theme */
+    background: #A53838; 
     border: none;
     padding: 5px 8px;
     color: white;
@@ -132,7 +131,7 @@ h2 {
     transform: scale(1.05);
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .task-item {
         flex: 1 1 calc(33.33% - 15px);
@@ -147,7 +146,7 @@ h2 {
   
 /* Breathing Glow */
 .breathing-glow {
-    animation: breathe 2s ease-in-out forwards; /* 2 seconds for full breathe */
+    animation: breathe 2s ease-in-out forwards; 
 }
 
 @keyframes breathe {
@@ -155,7 +154,7 @@ h2 {
         box-shadow: none;
     }
     50% {
-        box-shadow: 0 0 15px rgba(165, 56, 56, 1); /* Soft red glow */
+        box-shadow: 0 0 15px rgba(165, 56, 56, 1); 
     }
     100% {
         box-shadow: none;

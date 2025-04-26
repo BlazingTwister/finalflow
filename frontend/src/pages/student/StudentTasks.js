@@ -15,7 +15,7 @@ const StudentTasks = () => {
         loadTasks();
     }, []);
 
-    // Updated: Set highlight if navigated with a task ID
+    
 useEffect(() => {
     if (highlightTaskId) {
         // Step 1: Clear any previous highlight immediately
