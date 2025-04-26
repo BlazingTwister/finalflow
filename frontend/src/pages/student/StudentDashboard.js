@@ -1,45 +1,56 @@
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { fetchTasks } from "../../api/api"; 
 import "../../styles/dashboard.css";
 
 function StudentDashboard() {
   const [user, setUser] = useState(null);
+  const [tasks, setTasks] = useState([]); 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Retrieve user details from localStorage
-    const storedUser = localStorage.getItem("user");
+    useEffect(() => {
+      
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser)); // Parse the user info from localStorage
+      }
+  
+      // Fetch tasks from the backend
+      const loadTasks = async () => {
+        try {
+          const data = await fetchTasks(); 
+          const incompleteTasks = data.filter(task => task.status !== "completed"); // Filter out completed tasks
+          setTasks(incompleteTasks.slice(0, 3)); // Only show the first 3 tasks
+        } catch (error) {
+          console.error("Error fetching tasks:", error);
+        }
+      };
+  
+      loadTasks();
+    }, []); 
 
-    if (storedUser) {
-      setUser(JSON.parse(storedUser)); // Parse JSON string to object
-    }
-  }, []);
+  // Redirect to tasks page when a task is clicked
+  const handleTaskClick = (taskId) => {
+    navigate(`/student/tasks`, { state: { highlightTaskId: taskId } });
+  };
 
-  // Mock Data for the sections
+  // Placeholder Data for the sections
   const upcomingMeetings = [
     { id: 1, title: "Meeting with Dr. Smith", date: "Oct 15, 10:00 AM" },
     { id: 2, title: "Project Check-in", date: "Oct 22, 2:00 PM" },
     { id: 3, title: "Review Presentation", date: "Nov 1, 11:00 AM" },
   ];
 
-  const upcomingTasks = [
-    { id: 1, title: "Finish Literature Review", due: "Oct 18" },
-    { id: 2, title: "Email Supervisor", due: "Oct 20" },
-    { id: 3, title: "Submit Proposal", due: "Oct 20" },
-  ];
 
   // Handle redirection for meetings
   const handleMeetingClick = (meetingId) => {
-    navigate(`/student/meetings`); // Assuming you have a calendar page with meeting details
-  };
-
-  // Handle redirection for tasks
-  const handleTaskClick = (taskId) => {
-    navigate(`/student/tasks`); // Assuming you have a tasks page for task details
+    navigate(`/student/meetings`); 
   };
 
   return (
     <div className="dashboard-container">
+      <h2>Welcome, {user ? `${user.fname} ${user.lname}` : "Student"}</h2>
+
       {/* Top Progress Section */}
       <div className="top-progress">
         <h3>📈 Project Progress</h3>
@@ -64,11 +75,15 @@ function StudentDashboard() {
         </div>
         {/* Upcoming Tasks Section */}
         <div className="section">
-          <h3>📝 Upcoming Tasks</h3>
+          <h3>📌 Upcoming Tasks</h3>
           <ul>
-            {upcomingTasks.slice(0, 3).map((task) => (
-              <li key={task.id} onClick={() => handleTaskClick(task.id)}>
-                {task.title} - <span>Due: {task.due}</span>
+            {tasks.map((task) => (
+              <li
+                key={task.id}
+                onClick={() => handleTaskClick(task.id)} // Task click handler
+                className="task-item" // Class for item styling
+              >
+                {task.title} {/* Display task title */}
               </li>
             ))}
           </ul>

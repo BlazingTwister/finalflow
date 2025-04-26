@@ -144,3 +144,22 @@ h2 {
         flex: 1 1 calc(50% - 15px);
     }
 }
+  
+/* Breathing Glow */
+.breathing-glow {
+    animation: breathe 2s ease-in-out forwards; /* 2 seconds for full breathe */
+}
+
+@keyframes breathe {
+    0% {
+        box-shadow: none;
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(165, 56, 56, 1); /* Soft red glow */
+    }
+    100% {
+        box-shadow: none;
+    }
+}
+
+
