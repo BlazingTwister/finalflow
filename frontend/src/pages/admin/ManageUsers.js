@@ -203,7 +203,7 @@ function ManageUsers() {
                                          {user.user_role === 'student' ? (
                                             user.supervisor ? `${user.supervisor.fname} ${user.supervisor.lname}` : <span className="unassigned">Not Assigned</span>
                                          ) : (
-                                            '-' // Not applicable for non-students
+                                            'N/A' // Not applicable for non-students
                                          )}
                                      </td>
                                     <td className="action-buttons">
