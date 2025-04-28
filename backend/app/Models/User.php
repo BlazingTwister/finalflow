@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany; // <-- Add this
+use Illuminate\Database\Eloquent\Relations\BelongsTo; // <-- Add this
 
 class User extends Authenticatable
 {
@@ -22,9 +24,10 @@ class User extends Authenticatable
         'fname',
         'lname',
         'email',
-        'password', // Changed from 'password'
-        'user_role', // Changed from 'role'
+        'password',
+        'user_role',
         'is_verified',
+        'supervisor_id', // <-- Add supervisor_id
     ];
 
     /**
@@ -33,7 +36,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        'password', 
+        'password',
         'remember_token',
     ];
 
@@ -49,5 +52,18 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_verified' => 'boolean',
         ];
+    }
+
+    // Relationship: A supervisor (lecturer) has many students
+    public function supervisees(): HasMany
+    {
+        // Assuming 'lecturer' role supervises 'student' role
+        return $this->hasMany(User::class, 'supervisor_id');
+    }
+
+    // Relationship: A student belongs to one supervisor (lecturer)
+    public function supervisor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'supervisor_id');
     }
 }

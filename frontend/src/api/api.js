@@ -111,5 +111,91 @@ export const deleteTask = async (taskId) => {
     }
 };
 
+// --- Admin User Management API Calls ---
+
+/**
+ * Fetch users with optional search and role filtering.
+ * @param {string} [searchTerm] - Term to search by name/email.
+ * @param {string} [roleFilter] - Role to filter by ('student', 'lecturer', 'admin').
+ * @param {number} [page] - Page number for pagination.
+ */
+export const fetchAdminUsers = async (searchTerm = '', roleFilter = '', page = 1) => {
+    try {
+        const params = {};
+        if (searchTerm) params.search = searchTerm;
+        if (roleFilter) params.role = roleFilter;
+        params.page = page; // Include page number
+
+        const response = await api.get('/api/admin/users', { params });
+        // The response from Laravel pagination includes 'data' array and pagination links/meta
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        throw error; // Re-throw to handle in component
+    }
+};
+
+/**
+ * Delete a user by ID.
+ * @param {number} userId - The ID of the user to delete.
+ */
+export const deleteAdminUser = async (userId) => {
+    try {
+        await fetchCsrfToken(); // Ensure CSRF token
+        const response = await api.delete(`/api/admin/users/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        throw error;
+    }
+};
+
+/**
+ * Update a user's role.
+ * @param {number} userId - The ID of the user to update.
+ * @param {string} userRole - The new role ('student', 'lecturer', 'admin').
+ */
+export const updateAdminUserRole = async (userId, userRole) => {
+    try {
+        await fetchCsrfToken(); // Ensure CSRF token
+        const response = await api.patch(`/api/admin/users/${userId}/role`, { user_role: userRole });
+        return response.data; // Contains updated user object
+    } catch (error) {
+        console.error("Error updating user role:", error);
+        throw error;
+    }
+};
+
+ /**
+ * Assign a supervisor to a student.
+ * @param {number} studentId - The ID of the student.
+ * @param {number|null} supervisorId - The ID of the lecturer or null to unassign.
+ */
+export const assignAdminSupervisor = async (studentId, supervisorId) => {
+    try {
+        await fetchCsrfToken(); // Ensure CSRF token
+        // Handle null supervisorId correctly in the payload
+        const payload = { supervisor_id: supervisorId === null ? null : supervisorId };
+        const response = await api.patch(`/api/admin/users/${studentId}/assign-supervisor`, payload);
+        return response.data; // Contains updated student object with supervisor info
+    } catch (error) {
+        console.error("Error assigning supervisor:", error);
+        throw error;
+    }
+};
+
+/**
+ * Fetch all users with the 'lecturer' role.
+ */
+export const fetchAdminLecturers = async () => {
+    try {
+        const response = await api.get('/api/admin/lecturers');
+        return response.data; // Returns an array of lecturers {id, fname, lname}
+    } catch (error) {
+        console.error("Error fetching lecturers:", error);
+        throw error;
+    }
+};
+
 
 export default api;
