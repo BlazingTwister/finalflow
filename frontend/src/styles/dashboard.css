@@ -119,3 +119,87 @@ ul li span {
     font-size: 18px;
   }
 }
+
+/* src/styles/dashboard.css - Additions/Adjustments */
+
+/* Add styles for loading/error states if desired */
+.dashboard-container.loading-state p,
+.dashboard-container.error-state p {
+    text-align: center;
+    padding: 40px;
+    font-size: 1.2em;
+    color: #6c757d;
+}
+.dashboard-error { /* For errors shown after initial load */
+    color: #842029;
+    background-color: #f8d7da;
+    border: 1px solid #f5c2c7;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin: -10px 0 20px 0; /* Adjust positioning */
+    text-align: center;
+    font-size: 0.95em;
+}
+
+
+/* Style for task items in the dashboard list */
+.task-item-dashboard {
+    cursor: pointer;
+    padding: 6px 0; /* Add vertical padding */
+    border-bottom: 1px solid #eee; /* Separator */
+    transition: color 0.2s, background-color 0.2s;
+    list-style-position: inside; /* If using list markers */
+    margin-left: 0; /* Reset margin if needed */
+}
+ .task-item-dashboard:last-child {
+     border-bottom: none;
+ }
+.task-item-dashboard:hover {
+    color: #A53838; /* Theme color on hover */
+     background-color: #fdfdff; /* Slight background */
+}
+
+.task-due-date-dashboard {
+    font-size: 0.9em; /* Slightly larger */
+    color: #555; /* Darker grey */
+    margin-left: 8px;
+     font-style: italic; /* Italicize due date */
+}
+
+/* Ensure sections handle loading/no data text */
+.section p {
+    color: #6c757d;
+    font-style: italic;
+     padding-top: 10px;
+}
+
+/* Progress bar animation */
+.progress {
+    background: #4caf50; /* Keep green or use theme color #A53838 */
+    /* background: linear-gradient(to right, #8F2F2F, #A53838); */ /* Example gradient */
+    height: 100%;
+    border-radius: 15px;
+    transition: width 0.6s ease-in-out; /* Smooth transition for width change */
+    position: relative;
+     overflow: hidden;
+}
+
+ 
+ .progress::after {
+     content: '';
+     position: absolute;
+     top: 0; left: 0; bottom: 0; right: 0;
+     background-image: linear-gradient(
+         -45deg,
+         rgba(255, 255, 255, .15) 25%, transparent 25%,
+         transparent 50%, rgba(255, 255, 255, .15) 50%,
+         rgba(255, 255, 255, .15) 75%, transparent 75%, transparent
+     );
+     background-size: 40px 40px;
+     animation: progress-stripes 1s linear infinite;
+ }
+ @keyframes progress-stripes {
+     from { background-position: 40px 0; }
+     to { background-position: 0 0; }
+ }
+ 

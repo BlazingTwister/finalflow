@@ -11,12 +11,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         setUserRole(role);
     }, []);
 
-    //Sidebar for Students
+    //Sidebar for Students(⏻)
     const studentLinks = [
         { icon: "🏠︎", text: "Dashboard", path: "/student/dashboard" },
         { icon: "✉︎", text: "Messages", path: "/student/messaging" },
         { icon: "🗎", text: "Project Tasks", path: "/student/tasks" },
-        { icon: "𝄜", text: "Meetings", path: "/student/meetings" }
+        { icon: "𝄜", text: "Meetings", path: "/student/meetings" },
+        
+
     ];
 
     //Sidebar for Lecturers

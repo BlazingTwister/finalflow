@@ -46,11 +46,22 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return response()->json($request->user());
     });
 
-    // STUDENT TASK MANAGEMENT ROUTES (Protected)
-    Route::get('/tasks', [TaskController::class, 'index']); // Get tasks
-    Route::post('/tasks', [TaskController::class, 'store']); // Add task
-    Route::patch('/tasks/{task}', [TaskController::class, 'updateStatus']); // Update task status
-    Route::delete('/tasks/{task}', [TaskController::class, 'destroy']); // Delete task
+    // --- STUDENT TASK & SUB-TASK MANAGEMENT ROUTES ---
+    Route::get('/tasks', [TaskController::class, 'index']); // Get tasks (now includes sub-tasks)
+    Route::post('/tasks', [TaskController::class, 'store']); // Add task (can include sub-tasks)
+
+    // Use a specific route for updating ONLY the status of the main task
+    Route::patch('/tasks/{task}/status', [TaskController::class, 'updateStatus']); // Refined from original
+
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy']); // Delete task (and its sub-tasks via cascade)
+
+    // --- NEW Sub-Task Routes ---
+    Route::post('/tasks/{task}/subtasks', [TaskController::class, 'storeSubTask']);    // Add sub-task to a task
+    Route::patch('/subtasks/{subTask}/status', [TaskController::class, 'updateSubTaskStatus']); // Update status of a specific sub-task
+    Route::delete('/subtasks/{subTask}', [TaskController::class, 'destroySubTask']); // Delete a specific sub-task
+
+    // --- NEW Progress Route ---
+    Route::get('/tasks/progress', [TaskController::class, 'getProgress']); // Get overall progress percentage
 
     // LOGOUT ROUTE
     Route::post('/logout', [LoginController::class, 'destroy']);
