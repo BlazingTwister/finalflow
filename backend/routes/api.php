@@ -6,6 +6,8 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Lecturer\LecturerSubmissionSlotController; // <-- Add this
+use App\Http\Controllers\Student\StudentSubmissionSlotController;
 
 
 //Student Task Management
@@ -62,6 +64,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // --- NEW Progress Route ---
     Route::get('/tasks/progress', [TaskController::class, 'getProgress']); // Get overall progress percentage
+
+    // --- LECTURER SUBMISSION SLOT MANAGEMENT ROUTES ---
+    Route::prefix('lecturer')->middleware(['auth:sanctum'/*, 'isLecturer'*/])->name('lecturer.')->group(function () {
+    Route::get('/submission-slots/students', [LecturerSubmissionSlotController::class, 'getLecturerStudents'])->name('submission-slots.students'); // For fetching lecturer's students
+    Route::get('/submission-slots', [LecturerSubmissionSlotController::class, 'index'])->name('submission-slots.index');
+    Route::post('/submission-slots', [LecturerSubmissionSlotController::class, 'store'])->name('submission-slots.store');
+    Route::get('/submission-slots/{submissionSlot}', [LecturerSubmissionSlotController::class, 'show'])->name('submission-slots.show');
+    Route::put('/submission-slots/{submissionSlot}', [LecturerSubmissionSlotController::class, 'update'])->name('submission-slots.update'); // Using PUT for full update, PATCH for partial
+    Route::delete('/submission-slots/{submissionSlot}', [LecturerSubmissionSlotController::class, 'destroy'])->name('submission-slots.destroy');
+    Route::post('/submission-slots/{submissionSlot}/post', [LecturerSubmissionSlotController::class, 'postToStudents'])->name('submission-slots.post');
+    
+    }); 
 
     // LOGOUT ROUTE
     Route::post('/logout', [LoginController::class, 'destroy']);

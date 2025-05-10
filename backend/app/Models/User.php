@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany; // <-- Add this
 use Illuminate\Database\Eloquent\Relations\BelongsTo; // <-- Add this
+use Illuminate\Database\Eloquent\Relations\BelongsToMany; // Ensure this is present
+
 
 class User extends Authenticatable
 {
@@ -65,5 +67,28 @@ class User extends Authenticatable
     public function supervisor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'supervisor_id');
+    }
+
+    public function createdSubmissionSlots(): HasMany
+    {
+        return $this->hasMany(SubmissionSlot::class, 'lecturer_id');
+    }
+
+    /**
+     * Submission slots assigned to this user (if student).
+     */
+    public function assignedSubmissionSlots(): BelongsToMany
+    {
+        return $this->belongsToMany(SubmissionSlot::class, 'submission_slot_student', 'student_id', 'submission_slot_id')
+                    ->withPivot('posted_at')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Submissions made by this user (if student).
+     */
+    public function submissions(): HasMany
+    {
+        return $this->hasMany(StudentSubmission::class, 'student_id');
     }
 }

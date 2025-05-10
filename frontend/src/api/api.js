@@ -312,5 +312,114 @@ export const fetchAdminLecturers = async () => {
     }   
 };
 
+// --- LECTURER SUBMISSION SLOT MANAGEMENT ---
+
+/**
+ * Fetch all submission slots created by the authenticated lecturer.
+ */
+export const fetchLecturerSubmissionSlots = async () => {
+    try {
+        await fetchCsrfToken();
+        const response = await api.get('/api/lecturer/submission-slots');
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching lecturer submission slots:", error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
+
+/**
+ * Create a new submission slot.
+ * @param {object} slotData - { name, description, due_date }
+ */
+export const createSubmissionSlot = async (slotData) => {
+    try {
+        await fetchCsrfToken();
+        const response = await api.post('/api/lecturer/submission-slots', slotData);
+        return response.data;
+    } catch (error) {
+        console.error("Error creating submission slot:", error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
+
+/**
+ * Fetch details for a specific submission slot, including student submission statuses.
+ * @param {number} slotId - The ID of the submission slot.
+ */
+export const fetchLecturerSubmissionSlotDetails = async (slotId) => {
+    try {
+        await fetchCsrfToken();
+        const response = await api.get(`/api/lecturer/submission-slots/${slotId}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching details for submission slot ${slotId}:`, error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
+
+/**
+ * Update an existing submission slot.
+ * @param {number} slotId - The ID of the submission slot.
+ * @param {object} slotData - { name, description, due_date, status }
+ */
+export const updateSubmissionSlot = async (slotId, slotData) => {
+    try {
+        await fetchCsrfToken();
+        const response = await api.put(`/api/lecturer/submission-slots/${slotId}`, slotData);
+        return response.data;
+    } catch (error) {
+        console.error(`Error updating submission slot ${slotId}:`, error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
+
+/**
+ * Delete a submission slot.
+ * @param {number} slotId - The ID of the submission slot.
+ */
+export const deleteSubmissionSlot = async (slotId) => {
+    try {
+        await fetchCsrfToken();
+        const response = await api.delete(`/api/lecturer/submission-slots/${slotId}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error deleting submission slot ${slotId}:`, error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
+
+/**
+ * Post a submission slot to students.
+ * @param {number} slotId - The ID of the submission slot.
+ * @param {object} assignmentData - { student_ids: [id1, id2], post_to_all_students: boolean }
+ */
+export const postSlotToStudents = async (slotId, assignmentData) => {
+    try {
+        await fetchCsrfToken();
+        const response = await api.post(`/api/lecturer/submission-slots/${slotId}/post`, assignmentData);
+        return response.data;
+    } catch (error) {
+        console.error(`Error posting slot ${slotId} to students:`, error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
+
+/**
+ * Fetch all students supervised by the authenticated lecturer.
+ */
+export const fetchLecturerStudents = async () => {
+    try {
+        await fetchCsrfToken();
+        const response = await api.get('/api/lecturer/submission-slots/students');
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching lecturer's students:", error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
+
+
+
 
 export default api;

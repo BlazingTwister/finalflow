@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom"; // Import Outlet
 import Login from "./pages/Login";
 import Register from "./pages/Register"; 
 
+
 //Student imports
 import StudentDashboard from "./pages/student/StudentDashboard";
 import StudentMessaging from "./pages/student/StudentMessaging";
@@ -13,7 +14,8 @@ import StudentScheduling from "./pages/student/StudentScheduling";
 import LecturerDashboard from "./pages/lecturer/LecturerDashboard";
 import LecturerMessaging from "./pages/lecturer/LecturerMessaging";
 import LecturerScheduling from "./pages/lecturer/LecturerScheduling";
-import LecturerSubmissions from "./pages/lecturer/LecturerSubmissions";
+import LecturerSubmissionSlots from './pages/lecturer/LecturerSubmissionSlots'; // Adjust path
+
 
 //Admin imports
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -71,7 +73,7 @@ function App() {
             <Route path="dashboard" element={<LecturerDashboard />} />
             <Route path="messaging" element={<LecturerMessaging />} />
             <Route path="meetings" element={<LecturerScheduling />} />
-            <Route path="submissions" element={<LecturerSubmissions />} />
+            <Route path="submission-slots" element={<LecturerSubmissionSlots />} />
         </Route>
 
 

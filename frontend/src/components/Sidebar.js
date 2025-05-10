@@ -25,7 +25,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     const lecturerLinks = [
         { icon: "🏠︎", text: "Dashboard", path: "/lecturer/dashboard" },
         { icon: "✉︎", text: "Messages", path: "/lecturer/messaging" },
-        { icon: "🗀", text: "Student Submissions", path: "/lecturer/submissions" },
+        { icon: "🗀", text: "Student Submissions", path: "/lecturer/submission-slots" },
         { icon: "𝄜", text: "Meetings", path: "/lecturer/meetings" }
         //Timeline
     ];
