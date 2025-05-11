@@ -4,7 +4,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 // Import API functions: fetchTasks for upcoming, fetchTaskProgress for progress, fetchUser for welcome message
 import { fetchTasks, fetchTaskProgress, fetchUser } from "../../api/api"; // Adjust path
-import "../../styles/dashboard.css"; // Your dashboard styles
+import "../../styles/studentdashboard.css"; // Your dashboard styles
 
 function StudentDashboard() {
   const [user, setUser] = useState(null); // State for user details

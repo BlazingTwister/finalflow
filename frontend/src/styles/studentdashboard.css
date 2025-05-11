@@ -175,7 +175,7 @@ ul li span {
 
 /* Progress bar animation */
 .progress {
-    background: #4caf50; /* Keep green or use theme color #A53838 */
+    background: #A53838; /* Keep green or use theme color #A53838 */
     /* background: linear-gradient(to right, #8F2F2F, #A53838); */ /* Example gradient */
     height: 100%;
     border-radius: 15px;
