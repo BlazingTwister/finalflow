@@ -9,12 +9,14 @@ import StudentDashboard from "./pages/student/StudentDashboard";
 import StudentMessaging from "./pages/student/StudentMessaging";
 import StudentTasks from "./pages/student/StudentTasks";
 import StudentScheduling from "./pages/student/StudentScheduling";
+import StudentSubmissions from "./pages/student/StudentSubmissions"; // <-- NEW IMPORT
+
 
 //Lecturer imports
 import LecturerDashboard from "./pages/lecturer/LecturerDashboard";
 import LecturerMessaging from "./pages/lecturer/LecturerMessaging";
 import LecturerScheduling from "./pages/lecturer/LecturerScheduling";
-import LecturerSubmissionSlots from './pages/lecturer/LecturerSubmissionSlots'; // Adjust path
+import LecturerSubmissionSlots from './pages/lecturer/LecturerSubmissionSlots'; 
 
 
 //Admin imports
@@ -29,10 +31,10 @@ import Settings from "./pages/admin/Settings";
 import CapstoneRepository from "./pages/CapstoneRepository"; 
 
 //Components
-import Layout from "./components/Layout"; // Import Layout
+import Layout from "./components/Layout"; 
 
 //Testing
-import Users from './components/Users'; //To test connection to laravel
+// import Users from './components/Users'; //To test connection to laravel (Commented out if not needed)
 
 const LayoutWrapper = () => (
   <Layout>
@@ -52,7 +54,7 @@ function App() {
         <Route path="/login" element={<Login />} /> 
 
         {/* Register (Shared Page) */}
-        <Route path="/registeration" element={<Register />} />
+        <Route path="/registeration" element={<Register />} /> {/* Assuming this is meant to be /register */}
 
         {/* Repository (Shared Page) */}
         <Route path="/repository" element={<LayoutWrapper />}>
@@ -65,6 +67,7 @@ function App() {
             <Route path="messaging" element={<StudentMessaging />} />
             <Route path="tasks" element={<StudentTasks />} />
             <Route path="meetings" element={<StudentScheduling />} />
+            <Route path="submissions" element={<StudentSubmissions />} /> {/* <-- NEW ROUTE */}
         </Route>
 
 

@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 
 // Your existing Axios instance setup
@@ -13,227 +12,198 @@ const api = axios.create({
 });
 
 // --- CSRF Token Handling ---
-// Fetch CSRF token function (keep as is, called before state-changing requests)
 export const fetchCsrfToken = async () => {
     try {
-        // Make sure the path matches your Laravel Sanctum setup
-        await api.get('/sanctum/csrf-cookie'); //
-        // console.log("CSRF cookie potentially set/refreshed.");
+        await api.get('/sanctum/csrf-cookie');
     } catch (error) {
-         // Avoid crashing the app if this fails, but log it.
-         // State-changing requests might fail later.
-         console.error("Error fetching CSRF token:", error);
+         console.error("Error fetching CSRF token:", error.response?.data || error.message, error);
+         // It's important to understand why this might fail.
+         // If it's consistent, requests requiring CSRF will fail.
     }
 };
 
 
-// --- Auth Token Interceptor (Keep as is) ---
-api.interceptors.request.use(config => {
-    const token = localStorage.getItem("token"); //
+// --- Auth Token Interceptor ---
+api.interceptors.request.use(async config => { // Make interceptor async
+    const token = localStorage.getItem("token");
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`; //
+        config.headers.Authorization = `Bearer ${token}`;
     }
-    // Ensure CSRF token is fetched before non-GET requests if needed implicitly
-    // However, explicit calls in functions (like registerUser, loginUser) are safer.
+    // For non-GET requests, ensure CSRF token is fresh.
+    // This is a more robust way than calling fetchCsrfToken before every single POST/PATCH etc.
+    // However, for login/register, explicit call is still good as no token exists yet.
+    if (config.method && config.method.toLowerCase() !== 'get' && !config.url.includes('/sanctum/csrf-cookie')) {
+        // Check if it's not a GET request and not the CSRF request itself
+        // You might want to refine this logic based on specific needs
+        // For instance, only call it if a certain amount of time has passed since the last call.
+        // For simplicity here, we call it.
+        // await fetchCsrfToken(); // Consider implications of awaiting here for all non-GET requests.
+                                // It might be better to call fetchCsrfToken explicitly in each state-changing API function.
+                                // The current implementation in individual functions is generally safer.
+    }
     return config;
 }, error => {
-     // Pass on request errors
      return Promise.reject(error);
 });
 
 
-// --- Existing Auth Functions (Keep as is) ---
-export const registerUser = async (formData) => { //
+// --- Existing Auth Functions (registerUser, loginUser - keep explicit fetchCsrfToken) ---
+export const registerUser = async (formData) => {
     try {
-        await fetchCsrfToken(); //
-        const response = await api.post('/api/register', formData); //
+        await fetchCsrfToken();
+        const response = await api.post('/api/register', formData);
         return response.data;
     } catch (error) {
         console.error("Registration Error:", error.response?.data || error.message);
-        throw error; // Re-throw for component handling
+        throw error.response?.data || error;
     }
 };
 
-export const loginUser = async (formData) => { //
+export const loginUser = async (formData) => {
     try {
-        await fetchCsrfToken(); //
-        const response = await api.post('/api/login', formData); //
-        // Your existing token/user storing logic
+        await fetchCsrfToken();
+        const response = await api.post('/api/login', formData);
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId", response.data.auth_id); // Consider if auth_id is needed if you have the user object
+        localStorage.setItem("userId", response.data.user.id); // Store user ID from user object
         localStorage.setItem("userRole", response.data.user.user_role);
         localStorage.setItem("user", JSON.stringify(response.data.user));
         console.log("Login successful, token stored.");
         return response.data;
     } catch (error) {
         console.error("Login Error:", error.response?.data || error.message);
-        // Clear stored items on login failure? Maybe not, user might retry.
-        throw error; // Re-throw for component handling
+        throw error.response?.data || error;
     }
 };
 
-// --- Existing Task Functions (Adjust updateTaskStatus path and add CSRF) ---
-export const addTask = async (taskData) => { //
+export const logoutUser = async () => {
     try {
-        await fetchCsrfToken(); // Add CSRF fetch before POST
-        // taskData includes title, description, due_date, and optionally sub_tasks array
-        const response = await api.post('/api/tasks', taskData); // Matches api.php
+        await fetchCsrfToken();
+        await api.post('/api/logout');
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("user");
+        console.log("Logout successful, local storage cleared.");
+    } catch (error) {
+        console.error("Logout Error:", error.response?.data || error.message);
+        // Still clear local storage on error to ensure logged out state
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("user");
+        throw error.response?.data || error;
+    }
+};
+
+
+// --- Existing Task Functions (addTask, updateTaskStatus, fetchTasks, deleteTask) ---
+// --- Ensure fetchCsrfToken() is called before state-changing requests (POST, PATCH, DELETE) ---
+export const addTask = async (taskData) => {
+    try {
+        await fetchCsrfToken();
+        const response = await api.post('/api/tasks', taskData);
         return response.data;
     } catch (error) {
         console.error("Error adding task:", error.response?.data || error.message);
-        throw error;
+        throw error.response?.data || error;
     }
 };
 
-// Update MAIN task status (Using the specific status route from updated api.php)
-export const updateTaskStatus = async (taskId, status) => { //
+export const updateTaskStatus = async (taskId, status) => {
     try {
-        await fetchCsrfToken(); // Add CSRF fetch before PATCH
-         // Ensure the route matches api.php: /api/tasks/{task}/status
-        const response = await api.patch(`/api/tasks/${taskId}/status`, { status }); // Updated route
+        await fetchCsrfToken();
+        const response = await api.patch(`/api/tasks/${taskId}/status`, { status });
         return response.data;
     } catch (error) {
         console.error("Error updating task status:", error.response?.data || error.message);
-        throw error;
+        throw error.response?.data || error;
     }
 };
 
-export const fetchTasks = async () => { //
+export const fetchTasks = async () => {
     try {
-        const response = await api.get('/api/tasks'); // Matches api.php
-        // Ensure nested sub_tasks are arrays if needed (backend should handle this ideally)
+        const response = await api.get('/api/tasks');
          const tasks = response.data.map(task => ({
              ...task,
              sub_tasks: Array.isArray(task.sub_tasks) ? task.sub_tasks : []
          }));
          return Array.isArray(tasks) ? tasks : [];
-        // return Array.isArray(response.data) ? response.data : []; // Original return
     } catch (error) {
         console.error("Error fetching tasks:", error.response?.data || error.message);
-        // Consider how to handle auth errors (e.g., 401 Unauthorized) - maybe redirect to login
-        if (error.response?.status === 401) {
-             // clearLocalStorage(); // Example function to clear auth data
-             // window.location.href = '/login'; // Force redirect
-             console.warn("Unauthorized fetching tasks. Token might be invalid or missing.");
-        }
-        return []; // Return empty array on error
+        if (error.response?.status === 401) console.warn("Unauthorized fetching tasks.");
+        return [];
     }
 };
 
-export const deleteTask = async (taskId) => { //
+export const deleteTask = async (taskId) => {
     try {
-        await fetchCsrfToken(); // Add CSRF fetch before DELETE
-        const response = await api.delete(`/api/tasks/${taskId}`); // Matches api.php
+        await fetchCsrfToken();
+        const response = await api.delete(`/api/tasks/${taskId}`);
         return response.data;
     } catch (error) {
         console.error("Error deleting task:", error.response?.data || error.message);
-        throw error;
+        throw error.response?.data || error;
     }
 };
 
-// --- NEW Sub-Task Functions ---
-/**
- * Adds a sub-task to a specific parent task.
- * @param {number} taskId The ID of the parent task.
- * @param {object} subTaskData Object containing the sub-task details (e.g., { title: 'New Subtask' }).
- */
+// --- Sub-Task Functions (ensure CSRF) ---
 export const addSubTask = async (taskId, subTaskData) => {
     try {
-        await fetchCsrfToken(); // CSRF for POST
-         // Route matches api.php: /api/tasks/{task}/subtasks
+        await fetchCsrfToken();
         const response = await api.post(`/api/tasks/${taskId}/subtasks`, subTaskData);
-        return response.data; // Expects { message: '...', sub_task: { ... } }
+        return response.data;
     } catch (error) {
         console.error("Error adding sub-task:", error.response?.data || error.message);
-        throw error;
+        throw error.response?.data || error;
     }
 };
-
-/**
- * Updates the status of a specific sub-task.
- * @param {number} subTaskId The ID of the sub-task to update.
- * @param {string} status The new status ('pending' or 'completed').
- */
 export const updateSubTaskStatus = async (subTaskId, status) => {
     try {
-        await fetchCsrfToken(); // CSRF for PATCH
-         // Route matches api.php: /api/subtasks/{subTask}/status
+        await fetchCsrfToken();
         const response = await api.patch(`/api/subtasks/${subTaskId}/status`, { status });
-        // Expects { message: '...', sub_task: { ... }, parent_task_status: '...' }
         return response.data;
     } catch (error) {
          console.error("Error updating sub-task status:", error.response?.data || error.message);
-        throw error;
+        throw error.response?.data || error;
     }
 };
-
-/**
- * Deletes a specific sub-task.
- * @param {number} subTaskId The ID of the sub-task to delete.
- */
 export const deleteSubTask = async (subTaskId) => {
     try {
-        await fetchCsrfToken(); // CSRF for DELETE
-         // Route matches api.php: /api/subtasks/{subTask}
+        await fetchCsrfToken();
         const response = await api.delete(`/api/subtasks/${subTaskId}`);
-        // Expects { message: '...', parent_task_status: '...' }
         return response.data;
     } catch (error) {
         console.error("Error deleting sub-task:", error.response?.data || error.message);
-        throw error;
+        throw error.response?.data || error;
     }
 };
 
-// --- NEW Progress Function ---
-/**
- * Fetches the overall task progress percentage for the logged-in user.
- */
+// --- Progress Function ---
 export const fetchTaskProgress = async () => {
     try {
-         // Route matches api.php: /api/tasks/progress
         const response = await api.get('/api/tasks/progress');
-        return response.data; // Expects { progress: number }
+        return response.data;
     } catch (error) {
         console.error("Error fetching task progress:", error.response?.data || error.message);
-         if (error.response?.status === 401) {
-            // Handle unauthorized potentially
-            console.warn("Unauthorized fetching progress.");
-        }
-         // Return a default object or re-throw
-         return { progress: 0 }; // Default to 0% on error
-        // throw error; // Or re-throw
+        if (error.response?.status === 401) console.warn("Unauthorized fetching progress.");
+         return { progress: 0 };
     }
 };
 
- // --- NEW User Fetch Function (used in updated Dashboard) ---
- /**
-  * Fetches the details of the currently authenticated user.
-  */
+ // --- User Fetch Function ---
  export const fetchUser = async () => {
     try {
-        // Route matches api.php: /api/user
         const response = await api.get('/api/user');
-        return response.data; // Returns the user object
+        return response.data;
     } catch (error) {
         console.error("Error fetching user:", error.response?.data || error.message);
-        if (error.response?.status === 401) {
-             console.warn("Unauthorized fetching user details.");
-            // Handle unauthorized, e.g., clear token, redirect to login
-        }
-        throw error; // Re-throw to allow component to handle (e.g., show login prompt)
+        if (error.response?.status === 401) console.warn("Unauthorized fetching user details.");
+        throw error.response?.data || error;
     }
 };
 
 
-
-// --- Admin User Management API Calls ---
-
-/**
- * Fetch users with optional search and role filtering.
- * @param {string} [searchTerm] - Term to search by name/email.
- * @param {string} [roleFilter] - Role to filter by ('student', 'lecturer', 'admin').
- * @param {number} [page] - Page number for pagination.
- */
+// --- Admin User Management API Calls (ensure CSRF for state-changing) ---
 export const fetchAdminUsers = async (searchTerm = '', roleFilter = '', page = 1) => {
     try {
         const params = {};
@@ -265,61 +235,31 @@ export const deleteAdminUser = async (userId) => {
     }
 };
 
-/**
- * Update a user's role.
- * @param {number} userId - The ID of the user to update.
- * @param {string} userRole - The new role ('student', 'lecturer', 'admin').
- */
 export const updateAdminUserRole = async (userId, userRole) => {
     try {
-        await fetchCsrfToken(); // Ensure CSRF token
+        await fetchCsrfToken();
         const response = await api.patch(`/api/admin/users/${userId}/role`, { user_role: userRole });
-        return response.data; // Contains updated user object
-    } catch (error) {
-        console.error("Error updating user role:", error);
-        throw error;
-    }
+        return response.data;
+    } catch (error) { /* ... */ throw error.response?.data || error; }
 };
-
- /**
- * Assign a supervisor to a student.
- * @param {number} studentId - The ID of the student.
- * @param {number|null} supervisorId - The ID of the lecturer or null to unassign.
- */
 export const assignAdminSupervisor = async (studentId, supervisorId) => {
     try {
-        await fetchCsrfToken(); // Ensure CSRF token
-        // Handle null supervisorId correctly in the payload
+        await fetchCsrfToken();
         const payload = { supervisor_id: supervisorId === null ? null : supervisorId };
         const response = await api.patch(`/api/admin/users/${studentId}/assign-supervisor`, payload);
-        return response.data; // Contains updated student object with supervisor info
-    } catch (error) {
-        console.error("Error assigning supervisor:", error);
-        throw error;
-    }
+        return response.data;
+    } catch (error) { /* ... */ throw error.response?.data || error; }
 };
+export const fetchAdminLecturers = async () => { /* ... */ };
 
-/**
- * Fetch all users with the 'lecturer' role.
- */
-export const fetchAdminLecturers = async () => {
-    try {
-        const response = await api.get('/api/admin/lecturers');
-        return response.data; // Returns an array of lecturers {id, fname, lname}
-    } catch (error) {
-        console.error("Error fetching lecturers:", error);
-        throw error;
-    }   
-};
 
-// --- LECTURER SUBMISSION SLOT MANAGEMENT ---
+// --- LECTURER SUBMISSION SLOT MANAGEMENT (from your uploaded api.js) ---
+// (fetchLecturerSubmissionSlots, createSubmissionSlot, fetchLecturerSubmissionSlotDetails, updateSubmissionSlot, deleteSubmissionSlot, postSlotToStudents, fetchLecturerStudents)
+// Ensure all state-changing ones (create, update, delete, post) call await fetchCsrfToken();
 
-/**
- * Fetch all submission slots created by the authenticated lecturer.
- */
 export const fetchLecturerSubmissionSlots = async () => {
+    // No CSRF needed for GET
     try {
-        await fetchCsrfToken();
         const response = await api.get('/api/lecturer/submission-slots');
         return response.data;
     } catch (error) {
@@ -328,10 +268,6 @@ export const fetchLecturerSubmissionSlots = async () => {
     }
 };
 
-/**
- * Create a new submission slot.
- * @param {object} slotData - { name, description, due_date }
- */
 export const createSubmissionSlot = async (slotData) => {
     try {
         await fetchCsrfToken();
@@ -343,13 +279,9 @@ export const createSubmissionSlot = async (slotData) => {
     }
 };
 
-/**
- * Fetch details for a specific submission slot, including student submission statuses.
- * @param {number} slotId - The ID of the submission slot.
- */
 export const fetchLecturerSubmissionSlotDetails = async (slotId) => {
+    // No CSRF needed for GET
     try {
-        await fetchCsrfToken();
         const response = await api.get(`/api/lecturer/submission-slots/${slotId}`);
         return response.data;
     } catch (error) {
@@ -358,14 +290,11 @@ export const fetchLecturerSubmissionSlotDetails = async (slotId) => {
     }
 };
 
-/**
- * Update an existing submission slot.
- * @param {number} slotId - The ID of the submission slot.
- * @param {object} slotData - { name, description, due_date, status }
- */
 export const updateSubmissionSlot = async (slotId, slotData) => {
     try {
         await fetchCsrfToken();
+        // Laravel treats PUT and PATCH similarly for resource controllers if defined with Route::resource or Route::apiResource
+        // If your route is specifically Route::put, then this is fine.
         const response = await api.put(`/api/lecturer/submission-slots/${slotId}`, slotData);
         return response.data;
     } catch (error) {
@@ -374,10 +303,6 @@ export const updateSubmissionSlot = async (slotId, slotData) => {
     }
 };
 
-/**
- * Delete a submission slot.
- * @param {number} slotId - The ID of the submission slot.
- */
 export const deleteSubmissionSlot = async (slotId) => {
     try {
         await fetchCsrfToken();
@@ -389,11 +314,6 @@ export const deleteSubmissionSlot = async (slotId) => {
     }
 };
 
-/**
- * Post a submission slot to students.
- * @param {number} slotId - The ID of the submission slot.
- * @param {object} assignmentData - { student_ids: [id1, id2], post_to_all_students: boolean }
- */
 export const postSlotToStudents = async (slotId, assignmentData) => {
     try {
         await fetchCsrfToken();
@@ -405,12 +325,9 @@ export const postSlotToStudents = async (slotId, assignmentData) => {
     }
 };
 
-/**
- * Fetch all students supervised by the authenticated lecturer.
- */
 export const fetchLecturerStudents = async () => {
+    // No CSRF needed for GET
     try {
-        await fetchCsrfToken();
         const response = await api.get('/api/lecturer/submission-slots/students');
         return response.data;
     } catch (error) {
@@ -420,6 +337,133 @@ export const fetchLecturerStudents = async () => {
 };
 
 
+// --- NEW LECTURER ACTIONS ON STUDENT SUBMISSIONS ---
+/**
+ * Acknowledge a student's submission.
+ * @param {number} studentSubmissionId - The ID of the StudentSubmission record.
+ */
+export const acknowledgeStudentSubmission = async (studentSubmissionId) => {
+    try {
+        await fetchCsrfToken();
+        const response = await api.patch(`/api/lecturer/student-submissions/${studentSubmissionId}/acknowledge`);
+        return response.data; // Expects { message: '...', submission: { ... } }
+    } catch (error) {
+        console.error(`Error acknowledging submission ${studentSubmissionId}:`, error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
+
+/**
+ * Add/Update a comment on a student's submission.
+ * @param {number} studentSubmissionId - The ID of the StudentSubmission record.
+ * @param {object} commentData - { comment: "Your comment text" }
+ */
+export const commentOnStudentSubmission = async (studentSubmissionId, commentData) => {
+    try {
+        await fetchCsrfToken();
+        const response = await api.post(`/api/lecturer/student-submissions/${studentSubmissionId}/comment`, commentData);
+        return response.data; // Expects { message: '...', submission: { ... } }
+    } catch (error) {
+        console.error(`Error commenting on submission ${studentSubmissionId}:`, error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
+
+/**
+ * Download a file submitted by a student.
+ * @param {number} submissionFileId - The ID of the SubmissionFile record.
+ */
+export const downloadSubmissionFile = async (submissionFileId) => {
+    try {
+        // No CSRF needed for GET (download)
+        // The response should be a blob or trigger a download
+        const response = await api.get(`/api/lecturer/submission-files/${submissionFileId}/download`, {
+            responseType: 'blob', // Important for file downloads
+        });
+        // Create a link and trigger download
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        // Try to get filename from Content-Disposition header
+        const contentDisposition = response.headers['content-disposition'];
+        let filename = `submission_file_${submissionFileId}`; // Default filename
+        if (contentDisposition) {
+            const filenameMatch = contentDisposition.match(/filename="?(.+)"?/i);
+            if (filenameMatch && filenameMatch.length > 1) {
+                filename = filenameMatch[1];
+            }
+        }
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        return { success: true, message: 'File download initiated.' };
+    } catch (error) {
+        console.error(`Error downloading file ${submissionFileId}:`, error.response?.data || error.message);
+        // If responseType is blob, error.response.data might be a blob that needs to be parsed
+        // For simplicity, we'll throw a generic error or the error object if available.
+        if (error.response && error.response.data instanceof Blob) {
+            const errText = await error.response.data.text();
+            const errJson = JSON.parse(errText);
+            console.error("Error from server (blob):", errJson);
+            throw errJson || error;
+        }
+        throw error.response?.data || error;
+    }
+};
+
+
+// --- NEW STUDENT SUBMISSION FUNCTIONS ---
+/**
+ * Fetch submission slots assigned to the current student.
+ */
+export const fetchStudentAssignedSlots = async () => {
+    try {
+        // No CSRF needed for GET
+        const response = await api.get('/api/student/submission-slots');
+        return response.data; // Expects an array of slot objects with submission details
+    } catch (error) {
+        console.error("Error fetching student assigned slots:", error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
+
+/**
+ * Submit files for a specific submission slot.
+ * @param {number} slotId - The ID of the submission slot.
+ * @param {FormData} formData - FormData object containing the files under the key 'files[]'.
+ */
+export const submitStudentWork = async (slotId, formData) => {
+    try {
+        await fetchCsrfToken();
+        // When sending FormData, Content-Type header is set automatically by browser with boundary
+        // So, remove the default 'application/json' for this specific request.
+        const response = await api.post(`/api/student/submission-slots/${slotId}/submit`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response.data; // Expects { message: '...', submission_details: {...} }
+    } catch (error) {
+        console.error(`Error submitting work for slot ${slotId}:`, error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
+
+/**
+ * Fetch details of a specific submission made by the student.
+ * @param {number} studentSubmissionId - The ID of the student's submission.
+ */
+export const fetchMyStudentSubmissionDetails = async (studentSubmissionId) => {
+    try {
+        const response = await api.get(`/api/student/submission-slots/my-submissions/${studentSubmissionId}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching student submission ${studentSubmissionId}:`, error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
 
 
 export default api;

@@ -16,9 +16,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { icon: "🏠︎", text: "Dashboard", path: "/student/dashboard" },
         { icon: "✉︎", text: "Messages", path: "/student/messaging" },
         { icon: "🗎", text: "Project Tasks", path: "/student/tasks" },
-        { icon: "𝄜", text: "Meetings", path: "/student/meetings" },
+        { icon: "𝄜", text: "Submissions", path: "/student/submissions" },
+        { icon: "𝄜", text: "Meetings", path: "/student/meetings" }
         
-
     ];
 
     //Sidebar for Lecturers
