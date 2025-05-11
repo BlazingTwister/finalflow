@@ -72,17 +72,14 @@ export const loginUser = async (formData) => { //
     }
 };
 
-
 export const logoutUser = async () => {
     try {
         await fetchCsrfToken(); // Ensure CSRF token is available for POST request
-        const response = await api.post('/api/logout'); // Your Laravel logout route
-
+        const response = await api.post('/api/logout'); // logout route
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
         localStorage.removeItem("userRole");
         localStorage.removeItem("user");
-        
         console.log("Logout successful, token removed.");
         return response.data;
     } catch (error) {
