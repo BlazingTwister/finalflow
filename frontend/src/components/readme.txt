@@ -1,1 +1,0 @@
-This folder contains reusable UI elements (Navbar, Buttons, Forms)
