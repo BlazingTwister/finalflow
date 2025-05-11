@@ -77,27 +77,24 @@ export const loginUser = async (formData) => {
 
 export const logoutUser = async () => {
     try {
-        await fetchCsrfToken();
-        await api.post('/api/logout');
+        await fetchCsrfToken(); // Ensure CSRF token is available for POST request
+        const response = await api.post('/api/logout'); // Your Laravel logout route
+
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
         localStorage.removeItem("userRole");
         localStorage.removeItem("user");
-        console.log("Logout successful, local storage cleared.");
+        
+        console.log("Logout successful, token removed.");
+        return response.data;
     } catch (error) {
         console.error("Logout Error:", error.response?.data || error.message);
-        // Still clear local storage on error to ensure logged out state
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
-        localStorage.removeItem("userRole");
-        localStorage.removeItem("user");
-        throw error.response?.data || error;
+        throw error; // Allow component to handle it
     }
 };
 
 
-// --- Existing Task Functions (addTask, updateTaskStatus, fetchTasks, deleteTask) ---
-// --- Ensure fetchCsrfToken() is called before state-changing requests (POST, PATCH, DELETE) ---
+// --- Task Functions (addTask, updateTaskStatus, fetchTasks, deleteTask) ---
 export const addTask = async (taskData) => {
     try {
         await fetchCsrfToken();
