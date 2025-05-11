@@ -4,22 +4,17 @@ import Login from "./pages/Login";
 import Logout from "./pages/Logout"; 
 import Register from "./pages/Register"; 
 
-
 //Student imports
 import StudentDashboard from "./pages/student/StudentDashboard";
 import StudentMessaging from "./pages/student/StudentMessaging";
 import StudentTasks from "./pages/student/StudentTasks";
 import StudentScheduling from "./pages/student/StudentScheduling";
-import StudentSubmissions from "./pages/student/StudentSubmissions"; // <-- NEW IMPORT
-import LecturerStudentTaskCheckup from './pages/lecturer/LecturerStudentTaskCheckup'; // <-- NEW IMPORT
-
 
 //Lecturer imports
 import LecturerDashboard from "./pages/lecturer/LecturerDashboard";
 import LecturerMessaging from "./pages/lecturer/LecturerMessaging";
 import LecturerScheduling from "./pages/lecturer/LecturerScheduling";
-import LecturerSubmissionSlots from './pages/lecturer/LecturerSubmissionSlots'; 
-
+import LecturerSubmissions from "./pages/lecturer/LecturerSubmissions";
 
 //Admin imports
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -33,10 +28,10 @@ import Settings from "./pages/admin/Settings";
 import CapstoneRepository from "./pages/CapstoneRepository"; 
 
 //Components
-import Layout from "./components/Layout"; 
+import Layout from "./components/Layout"; // Import Layout
 
 //Testing
-// import Users from './components/Users'; //To test connection to laravel (Commented out if not needed)
+import Users from './components/Users'; //To test connection to laravel
 
 const LayoutWrapper = () => (
   <Layout>
@@ -56,7 +51,7 @@ function App() {
         <Route path="/login" element={<Login />} /> 
 
         {/* Register (Shared Page) */}
-        <Route path="/registeration" element={<Register />} /> {/* Assuming this is meant to be /register */}
+        <Route path="/registeration" element={<Register />} />
 
         {/* Logout (Shared Page) */}
         <Route path="/logout" element={<Logout />} /> 
@@ -72,7 +67,6 @@ function App() {
             <Route path="messaging" element={<StudentMessaging />} />
             <Route path="tasks" element={<StudentTasks />} />
             <Route path="meetings" element={<StudentScheduling />} />
-            <Route path="submissions" element={<StudentSubmissions />} /> {/* <-- NEW ROUTE */}
         </Route>
 
 
@@ -81,8 +75,7 @@ function App() {
             <Route path="dashboard" element={<LecturerDashboard />} />
             <Route path="messaging" element={<LecturerMessaging />} />
             <Route path="meetings" element={<LecturerScheduling />} />
-            <Route path="submission-slots" element={<LecturerSubmissionSlots />} />
-            <Route path="student-task-checkup" element={<LecturerStudentTaskCheckup />} /> {/* <-- NEW ROUTE */}
+            <Route path="submissions" element={<LecturerSubmissions />} />
         </Route>
 
 
