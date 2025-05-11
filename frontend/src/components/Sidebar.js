@@ -16,27 +16,17 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { icon: "🏠︎", text: "Dashboard", path: "/student/dashboard" },
         { icon: "✉︎", text: "Messages", path: "/student/messaging" },
         { icon: "🗎", text: "Project Tasks", path: "/student/tasks" },
-
-        { icon: "𝄜", text: "Meetings", path: "/student/meetings" },
-
         { icon: "🗀", text: "Submissions", path: "/student/submissions" },
         { icon: "𝄜", text: "Meetings", path: "/student/meetings" }
-        
     ];
 
     //Sidebar for Lecturers
     const lecturerLinks = [
         { icon: "🏠︎", text: "Dashboard", path: "/lecturer/dashboard" },
         { icon: "✉︎", text: "Messages", path: "/lecturer/messaging" },
-
-        { icon: "🗀", text: "Student Submissions", path: "/lecturer/submissions" },
-        { icon: "𝄜", text: "Meetings", path: "/lecturer/meetings" },
-
         { icon: "🗀", text: "Student Submissions", path: "/lecturer/submission-slots" },
         { icon: "👁", text: "Task Checkup", path: "/lecturer/student-task-checkup" },
         { icon: "𝄜", text: "Meetings", path: "/lecturer/meetings" }
-        //Timeline
-
     ];
 
     //Sidebar for Admin
