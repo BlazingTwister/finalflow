@@ -6,29 +6,26 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Lecturer\LecturerSubmissionSlotController; // Existing
+use App\Http\Controllers\Student\StudentSubmissionController; // New
 
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
 
-//Student Task Management
-
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-// CSRF Token Authentication
+// --- Public Routes ---
 Route::get('/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
-
-
-//User Registeration
 Route::post('/register', [RegisteredUserController::class, 'store']);
-
-
-//User Login
 Route::post('/login', [LoginController::class, 'store']);
-
-
-
 Route::get('/check-login', function (Request $request) {
     if (session()->has('user')) {
         return response()->json(['user' => session('user')], 200);
@@ -37,43 +34,71 @@ Route::get('/check-login', function (Request $request) {
 });
 
 
-
-// PROTECTED ROUTES (Require Authentication)
+// --- Authenticated Routes ---
 Route::middleware(['auth:sanctum'])->group(function () {
-
-    // USER PROFILE ROUTE (Protected)
     Route::get('/user', function (Request $request) {
         return response()->json($request->user());
     });
-
-    // --- STUDENT TASK & SUB-TASK MANAGEMENT ROUTES ---
-    Route::get('/tasks', [TaskController::class, 'index']); // Get tasks (now includes sub-tasks)
-    Route::post('/tasks', [TaskController::class, 'store']); // Add task (can include sub-tasks)
-
-    // Use a specific route for updating ONLY the status of the main task
-    Route::patch('/tasks/{task}/status', [TaskController::class, 'updateStatus']); // Refined from original
-
-    Route::delete('/tasks/{task}', [TaskController::class, 'destroy']); // Delete task (and its sub-tasks via cascade)
-
-    // --- NEW Sub-Task Routes ---
-    Route::post('/tasks/{task}/subtasks', [TaskController::class, 'storeSubTask']);    // Add sub-task to a task
-    Route::patch('/subtasks/{subTask}/status', [TaskController::class, 'updateSubTaskStatus']); // Update status of a specific sub-task
-    Route::delete('/subtasks/{subTask}', [TaskController::class, 'destroySubTask']); // Delete a specific sub-task
-
-    // --- NEW Progress Route ---
-    Route::get('/tasks/progress', [TaskController::class, 'getProgress']); // Get overall progress percentage
-
-    // LOGOUT ROUTE
     Route::post('/logout', [LoginController::class, 'destroy']);
 
-    // --- ADMIN USER MANAGEMENT ROUTES ---
-    // Apply 'isAdmin' middleware if you have one, or add checks within controller
-    Route::prefix('admin')->middleware(['auth:sanctum'/*, 'isAdmin'*/])->group(function () {
-        Route::get('/users', [AdminController::class, 'index']); // Get all users (with search/filter)
-        Route::patch('/users/{user}/role', [AdminController::class, 'updateRole']); // Change user role
-        Route::patch('/users/{student}/assign-supervisor', [AdminController::class, 'assignSupervisor']); // Assign supervisor
-        Route::delete('/users/{user}', [AdminController::class, 'destroy']); // Delete user
-        Route::get('/lecturers', [AdminController::class, 'getLecturers']); // Get list of lecturers for supervisor assignment
+    // --- Student Task Management ---
+    Route::prefix('tasks')->group(function () {
+        Route::get('/', [TaskController::class, 'index']);
+        Route::post('/', [TaskController::class, 'store']);
+        Route::get('/progress', [TaskController::class, 'getProgress']);
+        Route::patch('/{task}/status', [TaskController::class, 'updateStatus']); // For main task status
+        Route::delete('/{task}', [TaskController::class, 'destroy']);
+        // Sub-tasks
+        Route::post('/{task}/subtasks', [TaskController::class, 'storeSubTask']);
+        Route::patch('/subtasks/{subTask}/status', [TaskController::class, 'updateSubTaskStatus']);
+        Route::delete('/subtasks/{subTask}', [TaskController::class, 'destroySubTask']);
     });
+
+
+    // --- Admin User Management ---
+    Route::prefix('admin')->middleware(['auth:sanctum'/*, 'isAdmin'*/])->group(function () { // Add isAdmin middleware if you have one
+        Route::get('/users', [AdminController::class, 'index']);
+        Route::patch('/users/{user}/role', [AdminController::class, 'updateRole']);
+        Route::patch('/users/{student}/assign-supervisor', [AdminController::class, 'assignSupervisor']);
+        Route::delete('/users/{user}', [AdminController::class, 'destroy']);
+        Route::get('/lecturers', [AdminController::class, 'getLecturers']);
+    });
+
+    /// --- Lecturer Routes ---
+    Route::prefix('lecturer')->middleware(['auth:sanctum'/*, 'isLecturer'*/])->group(function () {
+
+        // --- Submission Slot Management (Existing) ---
+        Route::prefix('submission-slots')->group(function() {
+            Route::get('/', [LecturerSubmissionSlotController::class, 'index']);
+            Route::post('/', [LecturerSubmissionSlotController::class, 'store']);
+            Route::get('/students', [LecturerSubmissionSlotController::class, 'getLecturerStudents']); // Used by both features
+            Route::get('/{submissionSlot}', [LecturerSubmissionSlotController::class, 'show']);
+            Route::put('/{submissionSlot}', [LecturerSubmissionSlotController::class, 'update']);
+            Route::delete('/{submissionSlot}', [LecturerSubmissionSlotController::class, 'destroy']);
+            Route::post('/{submissionSlot}/post', [LecturerSubmissionSlotController::class, 'postToStudents']);
+            Route::patch('/student-submissions/{studentSubmission}/acknowledge', [LecturerSubmissionSlotController::class, 'acknowledgeSubmission']);
+            Route::post('/student-submissions/{studentSubmission}/comment', [LecturerSubmissionSlotController::class, 'addComment']);
+            Route::get('/submission-files/{submissionFile}/download', [LecturerSubmissionSlotController::class, 'downloadFile']);
+        });
+
+        // --- NEW: Student Task Check-up Route ---
+        // This route should be directly under the 'lecturer' prefix, not nested further
+        // unless intended. The path 'supervised-students/{student}/tasks' is relative to '/lecturer'.
+        Route::get('supervised-students/{student}/tasks', [TaskController::class, 'getTasksForStudentByLecturer'])
+            ->name('lecturer.student.tasks.show'); // Naming the route is good practice
+
+    });
+
+    
+
+    // --- Student Submission Management ---
+    Route::prefix('student/submission-slots')->middleware(['auth:sanctum'/*, 'isStudent'*/])->group(function () { // Add isStudent middleware
+        Route::get('/', [StudentSubmissionController::class, 'index'])->name('student.slots.index'); // List assigned slots
+        Route::post('/{submissionSlot}/submit', [StudentSubmissionController::class, 'submit'])->name('student.slots.submit'); // Submit work
+        // Route to view a specific submission made by the student (including files and comments)
+        Route::get('/my-submissions/{studentSubmission}', [StudentSubmissionController::class, 'showMySubmission'])
+            ->name('student.submissions.show');
+    });
+
 });
 
