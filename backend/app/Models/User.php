@@ -1,7 +1,4 @@
 <?php
-// File: app/Models/User.php
-// Add the 'tasks' relationship if it's not already present.
-// Ensure 'HasMany' is imported: use Illuminate\Database\Eloquent\Relations\HasMany;
 
 namespace App\Models;
 
@@ -10,10 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\HasMany; // Ensure this is present
-use Illuminate\Database\Eloquent\Relations\BelongsTo; // Ensure this is present
-use Illuminate\Database\Eloquent\Relations\BelongsToMany; // Ensure this is present
-
+use Illuminate\Database\Eloquent\Relations\HasMany; // <-- Add this
+use Illuminate\Database\Eloquent\Relations\BelongsTo; // <-- Add this
 
 class User extends Authenticatable
 {
@@ -32,7 +27,7 @@ class User extends Authenticatable
         'password',
         'user_role',
         'is_verified',
-        'supervisor_id', // This was added for supervisor assignment
+        'supervisor_id', // <-- Add supervisor_id
     ];
 
     /**
@@ -62,6 +57,7 @@ class User extends Authenticatable
     // Relationship: A supervisor (lecturer) has many students
     public function supervisees(): HasMany
     {
+        // Assuming 'lecturer' role supervises 'student' role
         return $this->hasMany(User::class, 'supervisor_id');
     }
 
@@ -69,29 +65,5 @@ class User extends Authenticatable
     public function supervisor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'supervisor_id');
-    }
-
-    // Relationship: Tasks created by this user (if student)
-    public function tasks(): HasMany
-    {
-        return $this->hasMany(Task::class, 'student_id');
-    }
-
-    // --- Relationships from Submission Slots Feature (ensure they are present) ---
-    public function createdSubmissionSlots(): HasMany
-    {
-        return $this->hasMany(SubmissionSlot::class, 'lecturer_id');
-    }
-
-    public function assignedSubmissionSlots(): BelongsToMany
-    {
-        return $this->belongsToMany(SubmissionSlot::class, 'submission_slot_student', 'student_id', 'submission_slot_id')
-                    ->withPivot('posted_at')
-                    ->withTimestamps();
-    }
-
-    public function submissions(): HasMany
-    {
-        return $this->hasMany(StudentSubmission::class, 'student_id');
     }
 }
