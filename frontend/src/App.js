@@ -23,6 +23,10 @@ import UserRequests from "./pages/admin/UserRequests";
 import Reports from "./pages/admin/Reports";
 import Settings from "./pages/admin/Settings";
 
+//Messaging
+import Inbox from './components/Inbox';
+import ComposeMessage from './components/ComposeMessage';
+
 //Repository
 import CapstoneRepository from "./pages/CapstoneRepository"; 
 
@@ -31,6 +35,8 @@ import Layout from "./components/Layout"; // Import Layout
 
 //Testing
 import Users from './components/Users'; //To test connection to laravel
+
+
 
 const LayoutWrapper = () => (
   <Layout>
@@ -51,6 +57,15 @@ function App() {
 
         {/* Register (Shared Page) */}
         <Route path="/registeration" element={<Register />} />
+
+
+        {/* Logout (Shared Page) */}
+        <Route path="/logout" element={<Logout />} /> 
+
+          
+        {/* Messaging (Shared Page) */}
+        <Route path="/inbox" element={<Inbox />} />
+        <Route path="/compose" element={<ComposeMessage />} />
 
         {/* Repository (Shared Page) */}
         <Route path="/repository" element={<LayoutWrapper />}>

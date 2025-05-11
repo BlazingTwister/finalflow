@@ -330,4 +330,50 @@ export const fetchAdminLecturers = async () => {
 };
 
 
+// --- Messaging API Calls ---
+
+
+/**
+ * Fetch all messages for the authenticated user.
+ */
+export const fetchMessages = async () => {
+    try {
+        const response = await api.get('/api/messages');
+        return response.data; // Should return an array of message objects
+    } catch (error) {
+        console.error("Error fetching messages:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
+/**
+ * Send a new message.
+ * @param {Object} messageData - { recipient_id, subject, body }
+ */
+export const sendMessage = async (messageData) => {
+    try {
+        await fetchCsrfToken();
+        const response = await api.post('/api/messages', messageData);
+        return response.data; // Returns { message, message: { ... } }
+    } catch (error) {
+        console.error("Error sending message:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
+/**
+ * Mark a message as read.
+ * @param {number} messageId
+ */
+export const markMessageAsRead = async (messageId) => {
+    try {
+        const response = await api.patch(`/api/messages/${messageId}/read`);
+        return response.data; // Returns { message: '...', updatedMessage: { ... } }
+    } catch (error) {
+        console.error("Error marking message as read:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
+
 export default api;
