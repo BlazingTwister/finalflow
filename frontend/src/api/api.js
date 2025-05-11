@@ -72,7 +72,6 @@ export const loginUser = async (formData) => { //
     }
 };
 
-
 export const logoutUser = async () => {
     try {
         await fetchCsrfToken(); // Ensure CSRF token is available for POST request
