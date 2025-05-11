@@ -17,8 +17,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { icon: "✉︎", text: "Messages", path: "/student/messaging" },
         { icon: "🗎", text: "Project Tasks", path: "/student/tasks" },
         { icon: "🗀", text: "Submissions", path: "/student/submissions" },
-        { icon: "𝄜", text: "Meetings", path: "/student/meetings" }
-        
+        { icon: "𝄜", text: "Meetings", path: "/student/meetings" },
+        { icon: "⏻", text: "Logout", path: "/logout" }
     ];
 
     //Sidebar for Lecturers
@@ -27,8 +27,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { icon: "✉︎", text: "Messages", path: "/lecturer/messaging" },
         { icon: "🗀", text: "Student Submissions", path: "/lecturer/submission-slots" },
         { icon: "👁", text: "Task Checkup", path: "/lecturer/student-task-checkup" },
-        { icon: "𝄜", text: "Meetings", path: "/lecturer/meetings" }
-        //Timeline
+        //{ icon: "𝄜", text: "Meetings", path: "/lecturer/meetings" },
+        { icon: "⏻", text: "Logout", path: "/logout" }
     ];
 
     //Sidebar for Admin
