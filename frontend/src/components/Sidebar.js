@@ -17,8 +17,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { icon: "✉︎", text: "Messages", path: "/student/messaging" },
         { icon: "🗎", text: "Project Tasks", path: "/student/tasks" },
         { icon: "𝄜", text: "Meetings", path: "/student/meetings" },
-        
-
+        { icon: "⏻", text: "Logout", path: "/logout" }
     ];
 
     //Sidebar for Lecturers
@@ -26,8 +25,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { icon: "🏠︎", text: "Dashboard", path: "/lecturer/dashboard" },
         { icon: "✉︎", text: "Messages", path: "/lecturer/messaging" },
         { icon: "🗀", text: "Student Submissions", path: "/lecturer/submissions" },
-        { icon: "𝄜", text: "Meetings", path: "/lecturer/meetings" }
-        //Timeline
+        { icon: "𝄜", text: "Meetings", path: "/lecturer/meetings" },
+        { icon: "⏻", text: "Logout", path: "/logout" }
     ];
 
     //Sidebar for Admin
@@ -35,7 +34,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         { icon: "🏠", text: "Dashboard", path: "/admin/dashboard" },
         { icon: "👥", text: "Manage Users", path: "/admin/manage-users" },
         { icon: "📊", text: "Reports", path: "/admin/reports" },
-        { icon: "⚙️", text: "Settings", path: "/admin/settings" }
+        { icon: "⚙️", text: "Settings", path: "/admin/settings" },
+        { icon: "⏻", text: "Logout", path: "/logout" }
     ];
 
     const links = userRole === "student" ? studentLinks : userRole === "lecturer" ? lecturerLinks : adminLinks;

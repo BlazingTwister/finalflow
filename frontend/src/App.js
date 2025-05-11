@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Outlet } from "react-router-dom"; // Import Outlet
 import Login from "./pages/Login";
+import Logout from "./pages/Logout"; 
 import Register from "./pages/Register"; 
 
 //Student imports
@@ -51,6 +52,9 @@ function App() {
 
         {/* Register (Shared Page) */}
         <Route path="/registeration" element={<Register />} />
+
+        {/* Logout (Shared Page) */}
+        <Route path="/logout" element={<Logout />} /> 
 
         {/* Repository (Shared Page) */}
         <Route path="/repository" element={<LayoutWrapper />}>

@@ -72,6 +72,26 @@ export const loginUser = async (formData) => { //
     }
 };
 
+
+export const logoutUser = async () => {
+    try {
+        await fetchCsrfToken(); // Ensure CSRF token is available for POST request
+        const response = await api.post('/api/logout'); // Your Laravel logout route
+
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("user");
+        
+        console.log("Logout successful, token removed.");
+        return response.data;
+    } catch (error) {
+        console.error("Logout Error:", error.response?.data || error.message);
+        throw error; // Allow component to handle it
+    }
+};
+
+
 // --- Existing Task Functions (Adjust updateTaskStatus path and add CSRF) ---
 export const addTask = async (taskData) => { //
     try {

@@ -53,11 +53,14 @@ class LoginController extends Controller
      */
     public function destroy(Request $request): JsonResponse
     {
-        // Remove user from session
+        // Revoke the current access token
+        $request->user()->currentAccessToken()->delete();
+
+        // Optionally clear session data if using sessions
         session()->forget('user');
 
         return response()->json([
             'message' => 'Logout successful!',
-        ]);
+        ], 200);
     }
 }
