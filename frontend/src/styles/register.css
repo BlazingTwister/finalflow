@@ -1,0 +1,78 @@
+/* Centered Form Styling */
+.register-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: white; /* Consistent with app theme */
+}
+
+/* Header Styling */
+.register-container h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #A53838; /* Matches your primary color */
+}
+
+/* Form Fields */
+.register-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.register-container input,
+.register-container select {
+    margin-bottom: 12px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border 0.3s ease-in-out;
+}
+
+.register-container input:focus,
+.register-container select:focus {
+    border-color: #A53838; /* Highlight input when focused */
+    outline: none;
+}
+
+/* Submit Button */
+.register-container button {
+    padding: 12px;
+    background-color: #A53838; /* Matches app theme */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
+}
+
+.register-container button:hover {
+    background-color: #8f2f2f; /* Darker shade on hover */
+}
+
+/* Error Message */
+.error {
+    color: red;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* Link Styling */
+.register-container p {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.register-container a {
+    color: #A53838;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-container a:hover {
+    text-decoration: underline;
+}
