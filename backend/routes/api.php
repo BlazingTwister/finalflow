@@ -64,24 +64,32 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/lecturers', [AdminController::class, 'getLecturers']);
     });
 
-    // --- Lecturer Submission Slot Management ---
-    Route::prefix('lecturer/submission-slots')->middleware(['auth:sanctum'/*, 'isLecturer'*/])->group(function () { // Add isLecturer middleware
-        Route::get('/', [LecturerSubmissionSlotController::class, 'index']);
-        Route::post('/', [LecturerSubmissionSlotController::class, 'store']);
-        Route::get('/students', [LecturerSubmissionSlotController::class, 'getLecturerStudents']); // Get lecturer's students
-        Route::get('/{submissionSlot}', [LecturerSubmissionSlotController::class, 'show']);
-        Route::put('/{submissionSlot}', [LecturerSubmissionSlotController::class, 'update']); // Using PUT for full update
-        Route::delete('/{submissionSlot}', [LecturerSubmissionSlotController::class, 'destroy']);
-        Route::post('/{submissionSlot}/post', [LecturerSubmissionSlotController::class, 'postToStudents']);
+    /// --- Lecturer Routes ---
+    Route::prefix('lecturer')->middleware(['auth:sanctum'/*, 'isLecturer'*/])->group(function () {
 
-        // New routes for lecturer actions on student submissions
-        Route::patch('/student-submissions/{studentSubmission}/acknowledge', [LecturerSubmissionSlotController::class, 'acknowledgeSubmission'])
-            ->name('lecturer.submissions.acknowledge'); // studentSubmission is the ID of the StudentSubmission model instance
-        Route::post('/student-submissions/{studentSubmission}/comment', [LecturerSubmissionSlotController::class, 'addComment'])
-            ->name('lecturer.submissions.comment');
-        Route::get('/submission-files/{submissionFile}/download', [LecturerSubmissionSlotController::class, 'downloadFile'])
-            ->name('lecturer.files.download');
+        // --- Submission Slot Management (Existing) ---
+        Route::prefix('submission-slots')->group(function() {
+            Route::get('/', [LecturerSubmissionSlotController::class, 'index']);
+            Route::post('/', [LecturerSubmissionSlotController::class, 'store']);
+            Route::get('/students', [LecturerSubmissionSlotController::class, 'getLecturerStudents']); // Used by both features
+            Route::get('/{submissionSlot}', [LecturerSubmissionSlotController::class, 'show']);
+            Route::put('/{submissionSlot}', [LecturerSubmissionSlotController::class, 'update']);
+            Route::delete('/{submissionSlot}', [LecturerSubmissionSlotController::class, 'destroy']);
+            Route::post('/{submissionSlot}/post', [LecturerSubmissionSlotController::class, 'postToStudents']);
+            Route::patch('/student-submissions/{studentSubmission}/acknowledge', [LecturerSubmissionSlotController::class, 'acknowledgeSubmission']);
+            Route::post('/student-submissions/{studentSubmission}/comment', [LecturerSubmissionSlotController::class, 'addComment']);
+            Route::get('/submission-files/{submissionFile}/download', [LecturerSubmissionSlotController::class, 'downloadFile']);
+        });
+
+        // --- NEW: Student Task Check-up Route ---
+        // This route should be directly under the 'lecturer' prefix, not nested further
+        // unless intended. The path 'supervised-students/{student}/tasks' is relative to '/lecturer'.
+        Route::get('supervised-students/{student}/tasks', [TaskController::class, 'getTasksForStudentByLecturer'])
+            ->name('lecturer.student.tasks.show'); // Naming the route is good practice
+
     });
+
+    
 
     // --- Student Submission Management ---
     Route::prefix('student/submission-slots')->middleware(['auth:sanctum'/*, 'isStudent'*/])->group(function () { // Add isStudent middleware

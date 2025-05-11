@@ -10,6 +10,7 @@ import StudentMessaging from "./pages/student/StudentMessaging";
 import StudentTasks from "./pages/student/StudentTasks";
 import StudentScheduling from "./pages/student/StudentScheduling";
 import StudentSubmissions from "./pages/student/StudentSubmissions"; // <-- NEW IMPORT
+import LecturerStudentTaskCheckup from './pages/lecturer/LecturerStudentTaskCheckup'; // <-- NEW IMPORT
 
 
 //Lecturer imports
@@ -77,6 +78,7 @@ function App() {
             <Route path="messaging" element={<LecturerMessaging />} />
             <Route path="meetings" element={<LecturerScheduling />} />
             <Route path="submission-slots" element={<LecturerSubmissionSlots />} />
+            <Route path="student-task-checkup" element={<LecturerStudentTaskCheckup />} /> {/* <-- NEW ROUTE */}
         </Route>
 
 

@@ -465,5 +465,28 @@ export const fetchMyStudentSubmissionDetails = async (studentSubmissionId) => {
     }
 };
 
+// --- NEW API FUNCTION FOR LECTURER TO FETCH A STUDENT'S TASKS ---
+/**
+ * Fetch all tasks for a specific supervised student.
+ * @param {number} studentId - The ID of the student.
+ * @returns {Promise<Array>} A promise that resolves to an array of tasks.
+ */
+export const fetchTasksForSupervisedStudent = async (studentId) => {
+    // No CSRF token needed for GET request
+    try {
+        const response = await api.get(`/api/lecturer/supervised-students/${studentId}/tasks`);
+        // Ensure tasks always have sub_tasks as an array, even if null/undefined from backend
+        const tasks = response.data.map(task => ({
+            ...task,
+            sub_tasks: Array.isArray(task.sub_tasks) ? task.sub_tasks : []
+        }));
+        return Array.isArray(tasks) ? tasks : [];
+    } catch (error) {
+        console.error(`Error fetching tasks for student ${studentId}:`, error.response?.data || error.message);
+        // Handle specific errors like 403 (not supervising) or 404 (student not found) if needed
+        throw error.response?.data || error; // Re-throw for component to handle
+    }
+};
+
 
 export default api;
