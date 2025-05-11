@@ -14,7 +14,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     //Sidebar for Students(⏻)
     const studentLinks = [
         { icon: "🏠︎", text: "Dashboard", path: "/student/dashboard" },
-        { icon: "✉︎", text: "Messages", path: "/student/messaging" },
+        { icon: "✉︎", text: "Messages", path: "/inbox" },
         { icon: "🗎", text: "Project Tasks", path: "/student/tasks" },
         { icon: "𝄜", text: "Meetings", path: "/student/meetings" },
         { icon: "⏻", text: "Logout", path: "/logout" }
@@ -23,7 +23,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     //Sidebar for Lecturers
     const lecturerLinks = [
         { icon: "🏠︎", text: "Dashboard", path: "/lecturer/dashboard" },
-        { icon: "✉︎", text: "Messages", path: "/lecturer/messaging" },
+        { icon: "✉︎", text: "Messages", path: "/inbox" },
         { icon: "🗀", text: "Student Submissions", path: "/lecturer/submissions" },
         { icon: "𝄜", text: "Meetings", path: "/lecturer/meetings" },
         { icon: "⏻", text: "Logout", path: "/logout" }

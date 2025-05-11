@@ -6,6 +6,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MessageController;
 
 
 //Student Task Management
@@ -26,6 +27,9 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 
 //User Login
 Route::post('/login', [LoginController::class, 'store']);
+
+//User Logout
+Route::post('/logout', [LoginController::class, 'destroy']);
 
 
 
@@ -65,6 +69,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // LOGOUT ROUTE
     Route::post('/logout', [LoginController::class, 'destroy']);
+
+    // --- NEW MESSAGE ROUTES ---
+    Route::get('/messages/{with}', [MessageController::class, 'index']);
+    Route::post('/messages', [MessageController::class, 'store']);
 
     // --- ADMIN USER MANAGEMENT ROUTES ---
     // Apply 'isAdmin' middleware if you have one, or add checks within controller

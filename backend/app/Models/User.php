@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\HasMany; // <-- Add this
-use Illuminate\Database\Eloquent\Relations\BelongsTo; // <-- Add this
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo; 
 
 class User extends Authenticatable
 {
@@ -27,7 +27,7 @@ class User extends Authenticatable
         'password',
         'user_role',
         'is_verified',
-        'supervisor_id', // <-- Add supervisor_id
+        'supervisor_id', 
     ];
 
     /**
@@ -66,4 +66,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
+
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
 }
