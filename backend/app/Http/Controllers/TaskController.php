@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
-use App\Models\User; // <-- Add User model for type hinting
 use App\Models\SubTask; // <-- Add SubTask model
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB; // <-- Add for database transactions
@@ -313,45 +312,5 @@ class TaskController extends Controller
 
         // Return the calculated progress percentage
         return response()->json(['progress' => $progressPercentage]);
-    }
-
-    // --- NEW METHOD FOR LECTURER TO FETCH STUDENT'S TASKS ---
-    /**
-     * Get all tasks (including sub-tasks) for a specific student,
-     * accessible by their authenticated supervisor.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\User $student The student user model instance (route-model bound).
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getTasksForStudentByLecturer(Request $request, User $student)
-    {
-        $lecturer = Auth::user();
-
-        // 1. Ensure authenticated user is a lecturer
-        if (!$lecturer || $lecturer->user_role !== 'lecturer') {
-            return response()->json(['error' => 'Unauthorized. Only lecturers can perform this action.'], 403);
-        }
-
-        // 2. Ensure the target student is supervised by this lecturer
-        // This relies on the 'supervisor_id' field on the student's User model.
-        if ($student->supervisor_id !== $lecturer->id) {
-            // Alternative check using the relationship (might be slightly less direct if supervisor_id is already loaded):
-            // if (!$lecturer->supervisees()->where('id', $student->id)->exists()) {
-            return response()->json(['error' => 'You do not supervise this student, or the student was not found.'], 403);
-        }
-
-        // 3. Ensure the target user is actually a student
-        if ($student->user_role !== 'student') {
-            return response()->json(['error' => 'The specified user is not a student.'], 400); // Bad Request
-        }
-
-        // 4. Fetch tasks for the student, including sub-tasks
-        $tasks = $student->tasks() // Uses the 'tasks' relationship defined in the User model
-                         ->with('subTasks') // Eager load sub-tasks
-                         ->orderBy('due_date', 'asc') // Order by due date, or any other preference
-                         ->get();
-
-        return response()->json($tasks);
     }
 }

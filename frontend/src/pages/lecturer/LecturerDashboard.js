@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "../../styles/studentdashboard.css"; //Change to Lecturer
+import "../../styles/dashboard.css";
 import { useState, useEffect } from "react";
 import Sidebar from "../../components/Sidebar"; // Import Sidebar component
 
