@@ -1,0 +1,64 @@
+.messaging-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Chat Box */
+.chat-box {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  height: 300px;
+  overflow-y: auto;
+}
+
+/* Message Styling */
+.message {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 8px;
+  width: fit-content;
+  max-width: 70%;
+}
+
+.message.student {
+  background: #A53838;
+  color: white;
+  margin-left: auto;
+  text-align: right;
+}
+
+.message.supervisor {
+  background: #e0e0e0;
+  color: black;
+  text-align: left;
+}
+
+/* Message Input */
+.message-input {
+  display: flex;
+  margin-top: 10px;
+}
+
+.message-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #A53838;
+  border-radius: 5px;
+}
+
+.message-input button {
+  background: #A53838;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  margin-left: 5px;
+  border-radius: 5px;
+}
+
+.message-input button:hover {
+  opacity: 0.8;
+}

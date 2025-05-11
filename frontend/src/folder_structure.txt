@@ -1,0 +1,65 @@
+Folder PATH listing for volume Windows
+Volume serial number is 8A96-B319
+C:.
+¦   App.css
+¦   App.js
+¦   App.test.js
+¦   folder_structure.txt
+¦   index.css
+¦   index.js
+¦   logo.svg
+¦   reportWebVitals.js
+¦   setupTests.js
+¦   
++---api
+¦       api.js
+¦       readme.txt
+¦       
++---components
+¦       Layout.js
+¦       readme.txt
+¦       Sidebar.js
+¦       StudentCard.js
+¦       SubmissionsPopup.js
+¦       
++---pages
+¦   ¦   Login.js
+¦   ¦   readme.txt
+¦   ¦   Repository.js
+¦   ¦   
+¦   +---admin
+¦   ¦       AdminDashboard.js
+¦   ¦       ManageRepository.js
+¦   ¦       ManageUsers.js
+¦   ¦       Reports.js
+¦   ¦       Settings.js
+¦   ¦       UserRequests.js
+¦   ¦       
+¦   +---lecturer
+¦   ¦       LecturerDashboard.js
+¦   ¦       LecturerMessaging.js
+¦   ¦       LecturerSchedule.js
+¦   ¦       LecturerSubmissions.js
+¦   ¦       
+¦   +---student
+¦           StudentDashboard.js
+¦           StudentMessaging.js
+¦           StudentScheduling.js
+¦           StudentTasks.js
+¦           
++---styles
+        adminDashboard.css
+        dashboard.css
+        lecturersubmissions.css
+        login.css
+        main.css
+        manageRepository.css
+        manageUsers.css
+        messaging.css
+        readme.txt
+        repository.css
+        scheduling.css
+        sidebar.css
+        tasks.css
+        userRequests.css
+        
