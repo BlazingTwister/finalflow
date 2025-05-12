@@ -217,6 +217,17 @@ export const fetchAdminUsers = async (searchTerm = '', roleFilter = '', page = 1
     }
 };
 
+export const fetchAdminLecturers = async () => {
+    try {
+        const response = await api.get('/api/admin/lecturers');
+        console.log("fetchAdminLecturers response:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching lecturers:", error.response?.data || error.message);
+        throw error.response?.data || error;
+    }
+};
+
 /**
  * Delete a user by ID.
  * @param {number} userId - The ID of the user to delete.
