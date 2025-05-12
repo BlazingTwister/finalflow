@@ -36,8 +36,8 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     const adminLinks = [
         { icon: "🏠", text: "Dashboard", path: "/admin/dashboard" },
         { icon: "👥", text: "Manage Users", path: "/admin/manage-users" },
-        { icon: "📊", text: "Reports", path: "/admin/reports" },
-        { icon: "⚙️", text: "Settings", path: "/admin/settings" },
+        // { icon: "📊", text: "Reports", path: "/admin/reports" },
+        // { icon: "⚙️", text: "Settings", path: "/admin/settings" },
         { icon: "⏻", text: "Logout", path: "/logout" }
     ];
 

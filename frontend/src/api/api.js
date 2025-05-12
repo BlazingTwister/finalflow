@@ -157,7 +157,7 @@ export const addSubTask = async (taskId, subTaskData) => {
 export const updateSubTaskStatus = async (subTaskId, status) => {
     try {
         await fetchCsrfToken();
-        const response = await api.patch(`/api/subtasks/${subTaskId}/status`, { status });
+        const response = await api.patch(`/api/tasks/subtasks/${subTaskId}/status`, { status });
         return response.data;
     } catch (error) {
          console.error("Error updating sub-task status:", error.response?.data || error.message);
@@ -167,7 +167,7 @@ export const updateSubTaskStatus = async (subTaskId, status) => {
 export const deleteSubTask = async (subTaskId) => {
     try {
         await fetchCsrfToken();
-        const response = await api.delete(`/api/subtasks/${subTaskId}`);
+        const response = await api.delete(`/api/tasks/subtasks/${subTaskId}`);
         return response.data;
     } catch (error) {
         console.error("Error deleting sub-task:", error.response?.data || error.message);
@@ -239,6 +239,7 @@ export const updateAdminUserRole = async (userId, userRole) => {
         return response.data;
     } catch (error) { /* ... */ throw error.response?.data || error; }
 };
+
 export const assignAdminSupervisor = async (studentId, supervisorId) => {
     try {
         await fetchCsrfToken();
@@ -247,7 +248,6 @@ export const assignAdminSupervisor = async (studentId, supervisorId) => {
         return response.data;
     } catch (error) { /* ... */ throw error.response?.data || error; }
 };
-export const fetchAdminLecturers = async () => { /* ... */ };
 
 
 // --- LECTURER SUBMISSION SLOT MANAGEMENT (from your uploaded api.js) ---
