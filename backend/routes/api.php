@@ -6,8 +6,8 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Lecturer\LecturerSubmissionSlotController; // Existing
-use App\Http\Controllers\Student\StudentSubmissionController; // New
+use App\Http\Controllers\Lecturer\LecturerSubmissionSlotController; 
+use App\Http\Controllers\Student\StudentSubmissionController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +99,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/my-submissions/{studentSubmission}', [StudentSubmissionController::class, 'showMySubmission'])
             ->name('student.submissions.show');
     });
+
+    // LOGOUT ROUTE
+    Route::post('/logout', [LoginController::class, 'destroy']);
 
 });
 
