@@ -1,11 +1,9 @@
-// src/pages/student/StudentTasks.js (Assuming path)
-
 import React, { useEffect, useState, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 // Updated API imports including sub-task and user functions
 import { fetchTasks, addTask, updateTaskStatus, deleteTask, fetchUser } from "../../api/api"; // Ensure fetchUser is imported if needed here, though likely dashboard uses it primarily
-import SubTaskModal from '../../components/SubTaskModal.js'; // Import the modal component (adjust path)
-import "../../styles/tasks.css"; // Your existing styles, will be updated in next step
+import SubTaskModal from '../../components/SubTaskModal.js'; 
+import "../../styles/tasks.css"; 
 
 const StudentTasks = () => {
     const [tasks, setTasks] = useState([]);
@@ -24,7 +22,7 @@ const StudentTasks = () => {
     // State to display general errors (e.g., loading tasks failed)
      const [error, setError] = useState('');
 
-    // --- Highlighting Effect (Keep as is from your file) ---
+    // Highlighting Effect 
     useEffect(() => {
          if (highlightTaskId) {
             setHighlightedTaskId(null); // Clear previous immediately
@@ -38,7 +36,7 @@ const StudentTasks = () => {
         }
     }, [highlightTaskId]); // Re-run if highlighted task ID changes
 
-    // --- Load Tasks Function (using useCallback for stability) ---
+    // Load Tasks Function (using useCallback for stability) 
     const loadTasks = useCallback(async () => {
         setIsLoading(true);
         setError(''); // Clear previous errors
@@ -120,8 +118,7 @@ const StudentTasks = () => {
 
     // --- Update MAIN Task Status Handler ---
     const handleUpdateStatus = async (taskId, currentStatus) => {
-         // Simple toggle: if completed -> pending, otherwise -> completed
-         // Adjust if you need 'in_progress' state toggle logic
+         
          const newStatus = currentStatus === 'completed' ? 'pending' : 'completed';
 
         // Find the task locally first for immediate UI update (optional but good UX)
@@ -132,21 +129,20 @@ const StudentTasks = () => {
          const originalTasks = [...tasks]; // Keep a copy to revert on error
         const updatedTasks = [...tasks];
         updatedTasks[taskIndex] = { ...updatedTasks[taskIndex], status: newStatus };
-        setTasks(updatedTasks); // Optimistically update UI
+        setTasks(updatedTasks); // update UI
 
         setError(''); // Clear errors before trying
 
         try {
             // Call the API to update the status
             await updateTaskStatus(taskId, newStatus);
-            // If API succeeds, the optimistic update is correct. Optionally reload for consistency:
-            // loadTasks(); // Or just trust the optimistic update if API returns the updated task
+            
         } catch (err) {
             console.error("Error updating task status:", err);
             setError(`Failed to update status: ${err.response?.data?.message || err.message}`);
             setTasks(originalTasks); // Revert UI on error
         }
-         // Note: No setIsLoading here as it's a quick toggle, adjust if needed
+         
     };
 
     // --- Delete MAIN Task Handler ---
@@ -165,7 +161,7 @@ const StudentTasks = () => {
              setError(`Failed to delete task: ${err.response?.data?.message || err.message}`);
              setIsLoading(false); // Ensure loading is turned off on error too
         }
-        // setIsLoading(false); // Already handled in finally block if loadTasks has one
+        
     };
 
     // --- Modal Handling ---
@@ -183,25 +179,18 @@ const StudentTasks = () => {
     };
 
     // --- Callback for Sub-Task Changes from Modal ---
-    // This function is passed to SubTaskModal and called when a sub-task is added, updated, or deleted.
+    
     const handleSubTaskChangeCallback = (updatedParentTaskId, parentTaskNewStatus) => {
         // Find the parent task in the current state
         const taskToUpdate = tasks.find(t => t.id === updatedParentTaskId);
 
         if (taskToUpdate) {
-             // Reload all tasks to get the most up-to-date sub-task list and parent status
-             // This is simpler than trying to merge partial updates locally.
+             
              loadTasks();
 
-            // If the modal is still open for this task, update its data
-            // so the modal reflects the latest changes immediately after reload finishes.
+            
              if (selectedTaskForModal && selectedTaskForModal.id === updatedParentTaskId) {
-                // We need the *reloaded* task data here.
-                // This is tricky. Option 1: Reload *then* update modal state.
-                // Option 2: Update modal state optimistically (complex).
-                // Let's stick to reloading tasks, the modal will close/reopen if needed.
-                // Or better: Refetch just the single task data after modal action if performance is key.
-                // For now, loadTasks() handles consistency.
+                
              }
         }
     };
