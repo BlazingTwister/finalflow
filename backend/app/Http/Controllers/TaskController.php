@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
-use App\Models\User; // <-- Add User model for type hinting
-use App\Models\SubTask; // <-- Add SubTask model
+use App\Models\User; 
+use App\Models\SubTask; // Add SubTask model
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB; // <-- Add for database transactions
-use Illuminate\Validation\Rule; // <-- Add for Rule::in validation
+use Illuminate\Support\Facades\DB; // Add for database transactions
+use Illuminate\Validation\Rule; // Add for Rule::in validation
 
 class TaskController extends Controller
 {
@@ -26,7 +26,7 @@ class TaskController extends Controller
         // Eager load sub-tasks to avoid N+1 query problem when accessing $task->subTasks later
         $tasks = Task::with('subTasks') // Eager load the relationship defined in Task model
                    ->where('student_id', Auth::id())
-                   ->orderBy('due_date', 'asc') // Optional: Order tasks by due date
+                   ->orderBy('due_date', 'asc') 
                    ->get();
 
         // Return tasks with their sub-tasks nested within the JSON response
@@ -69,7 +69,7 @@ class TaskController extends Controller
                         // 'status' defaults to 'pending' as per sub_tasks migration
                     ]);
                 }
-                // Example using createMany for potential efficiency (less common for small numbers)
+            
                 // $subTaskModels = [];
                 // foreach ($validated['sub_tasks'] as $subTaskTitle) {
                 //     $subTaskModels[] = new SubTask(['title' => $subTaskTitle]);
@@ -127,9 +127,7 @@ class TaskController extends Controller
         // Alternatively: return response()->noContent(); // If no message body is needed
     }
 
-    // =======================================
-    // --- NEW METHODS FOR SUB-TASK MNGMT ---
-    // =======================================
+    
 
     /**
      * Add a single sub-task to an existing task.
@@ -142,7 +140,7 @@ class TaskController extends Controller
             return response()->json(['error' => 'Unauthorized to add sub-task to this task.'], 403);
         }
 
-        // Business Rule: Prevent adding sub-tasks if the main task is already marked 'completed'
+        // Prevent adding sub-tasks if the main task is already marked 'completed'
         if ($task->status === 'completed') {
              return response()->json(['error' => 'Cannot add sub-tasks to a task already marked as completed.'], 400); // 400 Bad Request
         }
@@ -176,7 +174,7 @@ class TaskController extends Controller
             'status' => ['required', Rule::in($this->subTaskStatuses)], // Validate against allowed sub-task statuses
         ]);
 
-        // Business Rule: Prevent updating sub-task if the main task is already marked 'completed'
+        // Prevent updating sub-task if the main task is already marked 'completed'
         if ($subTask->task->status === 'completed') {
             return response()->json(['error' => 'Cannot update sub-task status; parent task is already marked completed.'], 400);
         }
@@ -184,7 +182,7 @@ class TaskController extends Controller
         // Update the sub-task status
         $subTask->update(['status' => $validated['status']]);
 
-        // --- Auto-complete Parent Task Logic ---
+        
         $parentTask = $subTask->task; // Get the parent task instance
 
         // Check if ALL sibling sub-tasks (including the one just updated) are now 'completed'
@@ -198,7 +196,7 @@ class TaskController extends Controller
             // Refresh the parentTask instance variable with the new status
             $parentTask->refresh();
         }
-         // --- End Auto-complete Logic ---
+         
 
         // Return the updated sub-task and the (potentially updated) parent task status
         return response()->json([
@@ -219,7 +217,7 @@ class TaskController extends Controller
              return response()->json(['error' => 'Unauthorized action.'], 403);
         }
 
-         // Optional Business Rule: Prevent deleting sub-task if main task is completed?
+         
          // if ($subTask->task->status === 'completed') {
          //     return response()->json(['error' => 'Cannot delete sub-task from a completed parent task.'], 400);
          // }
@@ -227,14 +225,14 @@ class TaskController extends Controller
         $parentTask = $subTask->task; // Get parent task instance BEFORE deleting sub-task
         $subTask->delete();
 
-         // --- Check Parent Task Status After Deletion ---
+         
          // This logic runs only if the parent task was NOT already 'completed'.
          if ($parentTask->status !== 'completed') {
-             // Check if any sub-tasks *still exist* for this parent task
+             // Check if any sub-tasks still exist for this parent task
              $hasRemainingSubTasks = $parentTask->subTasks()->exists();
 
             if ($hasRemainingSubTasks) {
-                 // If sub-tasks remain, check if *all* of them are now completed
+                 // If sub-tasks remain, check if all of them are now completed
                  $allRemainingSubTasksCompleted = $parentTask->subTasks()
                                                              ->where('status', '!=', 'completed')
                                                              ->doesntExist();
@@ -243,7 +241,7 @@ class TaskController extends Controller
                     $parentTask->update(['status' => 'completed']);
                 }
             }
-            // Optional: What if NO sub-tasks remain after deletion?
+            
             // Should the parent task revert to 'pending' or stay 'in_progress'?
             // else {
             //    // If needed, handle the case where the last sub-task was deleted.
@@ -252,7 +250,7 @@ class TaskController extends Controller
          }
          // Refresh the parent task instance to get the latest status after potential update
         $parentTask->refresh();
-        // --- End Check Parent Task Status ---
+        
 
         return response()->json([
             'message' => 'Sub-task deleted successfully!',
@@ -260,10 +258,7 @@ class TaskController extends Controller
             ], 200);
     }
 
-    // ===================================
-    // --- PROGRESS CALCULATION LOGIC ---
-    // ===================================
-
+    
     /**
      * Calculate and return the overall project progress percentage for the student.
      */
@@ -315,7 +310,7 @@ class TaskController extends Controller
         return response()->json(['progress' => $progressPercentage]);
     }
 
-    // --- NEW METHOD FOR LECTURER TO FETCH STUDENT'S TASKS ---
+    
     /**
      * Get all tasks (including sub-tasks) for a specific student,
      * accessible by their authenticated supervisor.
