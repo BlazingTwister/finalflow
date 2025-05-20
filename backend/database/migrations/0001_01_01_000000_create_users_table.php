@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * To test connection between Laravel and react:
-     */
+    
     public function up()
 {
     Schema::create('users', function (Blueprint $table) {
