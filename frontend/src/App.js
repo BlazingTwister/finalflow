@@ -10,8 +10,8 @@ import StudentDashboard from "./pages/student/StudentDashboard";
 import StudentMessaging from "./pages/student/StudentMessaging";
 import StudentTasks from "./pages/student/StudentTasks";
 import StudentScheduling from "./pages/student/StudentScheduling";
-import StudentSubmissions from "./pages/student/StudentSubmissions"; // <-- NEW IMPORT
-import LecturerStudentTaskCheckup from './pages/lecturer/LecturerStudentTaskCheckup'; // <-- NEW IMPORT
+import StudentSubmissions from "./pages/student/StudentSubmissions"; 
+import LecturerStudentTaskCheckup from './pages/lecturer/LecturerStudentTaskCheckup'; 
 
 
 //Lecturer imports
@@ -36,7 +36,7 @@ import CapstoneRepository from "./pages/CapstoneRepository";
 import Layout from "./components/Layout"; 
 
 //Testing
-// import Users from './components/Users'; //To test connection to laravel (Commented out if not needed)
+
 
 const LayoutWrapper = () => (
   <Layout>
