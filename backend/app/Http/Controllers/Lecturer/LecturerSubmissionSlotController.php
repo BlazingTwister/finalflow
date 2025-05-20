@@ -261,7 +261,6 @@ class LecturerSubmissionSlotController extends Controller
         return response()->json($students);
     }
 
-    // --- New Methods for Lecturer Actions on Submissions ---
 
     /**
      * Acknowledge receipt of a student's submission.
@@ -322,7 +321,7 @@ class LecturerSubmissionSlotController extends Controller
             return response()->json(['error' => 'Unauthorized. You cannot download this file.'], 403);
         }
 
-        // CRITICAL: Check for acknowledgement
+        // Check for acknowledgement
         if ($studentSubmission->acknowledgement_status !== 'acknowledged') {
             return response()->json(['error' => 'Submission must be acknowledged before downloading files.'], 403);
         }
