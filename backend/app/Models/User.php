@@ -1,7 +1,4 @@
 <?php
-// File: app/Models/User.php
-// Add the 'tasks' relationship if it's not already present.
-// Ensure 'HasMany' is imported: use Illuminate\Database\Eloquent\Relations\HasMany;
 
 namespace App\Models;
 
@@ -10,9 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\HasMany; // Ensure this is present
-use Illuminate\Database\Eloquent\Relations\BelongsTo; // Ensure this is present
-use Illuminate\Database\Eloquent\Relations\BelongsToMany; // Ensure this is present
+use Illuminate\Database\Eloquent\Relations\HasMany; 
+use Illuminate\Database\Eloquent\Relations\BelongsTo; 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany; 
 
 
 class User extends Authenticatable
@@ -32,7 +29,7 @@ class User extends Authenticatable
         'password',
         'user_role',
         'is_verified',
-        'supervisor_id', // This was added for supervisor assignment
+        'supervisor_id', // added for supervisor assignment
     ];
 
     /**
@@ -77,7 +74,7 @@ class User extends Authenticatable
         return $this->hasMany(Task::class, 'student_id');
     }
 
-    // --- Relationships from Submission Slots Feature (ensure they are present) ---
+    // Relationships from Submission Slots Feature (ensure they are present) 
     public function createdSubmissionSlots(): HasMany
     {
         return $this->hasMany(SubmissionSlot::class, 'lecturer_id');
