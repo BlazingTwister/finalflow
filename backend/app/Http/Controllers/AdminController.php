@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
-    // Basic admin check (replace with proper middleware/policy if needed)
+    // admin check
     private function ensureAdmin(Request $request)
     {
         if ($request->user()->user_role !== 'admin') {
@@ -41,7 +41,7 @@ class AdminController extends Controller
             $query->where('user_role', $request->role);
         }
 
-        // Exclude the current admin user from the list if desired
+        // Exclude the current admin user from the list 
         // $query->where('id', '!=', $request->user()->id);
 
         $users = $query->orderBy('lname')->orderBy('fname')->paginate(15); // Paginate results
@@ -121,7 +121,7 @@ class AdminController extends Controller
             return response()->json(['message' => 'Admin cannot delete themselves.'], 400);
         }
 
-        // Optional: Add logic here if deleting a lecturer needs to reassign their students
+    
 
         $user->delete();
 
