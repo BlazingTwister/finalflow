@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    
     public function up(): void
     {
         Schema::create('student_submissions', function (Blueprint $table) {
@@ -21,15 +19,11 @@ return new class extends Migration
             $table->timestamp('acknowledged_at')->nullable();
             $table->timestamps();
 
-            // A student typically submits once per slot, but you might allow resubmissions.
-            // If only one submission is allowed, add a unique constraint:
-            // $table->unique(['submission_slot_id', 'student_id'], 'student_slot_submission_unique');
+          
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('student_submissions');
