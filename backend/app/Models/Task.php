@@ -5,8 +5,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo; // Keep this
-use Illuminate\Database\Eloquent\Relations\HasMany; // <-- Add this import
+use Illuminate\Database\Eloquent\Relations\BelongsTo; 
+use Illuminate\Database\Eloquent\Relations\HasMany; 
 
 class Task extends Model
 {
@@ -27,7 +27,6 @@ class Task extends Model
 
     /**
      * Get the student (User) that owns the Task.
-     * (Your original file named this 'student', we keep it, assuming User model is used)
      *
      */
     public function student(): BelongsTo
@@ -40,14 +39,14 @@ class Task extends Model
      * Get the sub-tasks associated with the Task.
      * Defines a one-to-many relationship.
      */
-    public function subTasks(): HasMany // <-- NEW relationship
+    public function subTasks(): HasMany 
     {
         return $this->hasMany(SubTask::class);
     }
 
     /**
      * Scope a query to only include tasks without sub-tasks.
-     * (Optional helper scope)
+     * 
      */
     public function scopeDoesntHaveSubTasks($query)
     {
@@ -56,7 +55,7 @@ class Task extends Model
 
     /**
      * Scope a query to only include tasks with sub-tasks.
-     * (Optional helper scope)
+     * 
      */
      public function scopeHasSubTasks($query)
      {
