@@ -7,9 +7,9 @@ import {
     deleteSubmissionSlot,
     postSlotToStudents,
     fetchLecturerStudents,
-    acknowledgeStudentSubmission, // New
-    commentOnStudentSubmission,   // New
-    downloadSubmissionFile        // New
+    acknowledgeStudentSubmission, 
+    commentOnStudentSubmission,   
+    downloadSubmissionFile        
 } from '../../api/api.js';
 import '../../styles/LecturerSubmissionSlots.css';
 
@@ -28,7 +28,7 @@ const LecturerSubmissionSlots = () => {
     const [postToAll, setPostToAll] = useState(false);
 
     const [editingSlot, setEditingSlot] = useState(null);
-    const [commentingSubmission, setCommentingSubmission] = useState(null); // { submissionId: id, currentComment: '' }
+    const [commentingSubmission, setCommentingSubmission] = useState(null); 
     const [commentText, setCommentText] = useState('');
 
     const clearMessages = () => {
@@ -51,7 +51,7 @@ const LecturerSubmissionSlots = () => {
     }, []);
 
     const loadLecturerStudents = useCallback(async () => {
-        // No loading indicator for this, as it's a background load
+        
         try {
             const data = await fetchLecturerStudents();
             setLecturerStudents(data);
