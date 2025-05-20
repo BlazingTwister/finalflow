@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('submission_slots', function (Blueprint $table) {
@@ -17,7 +14,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->timestamp('due_date');
-            $table->enum('status', ['open', 'closed'])->default('open'); // 'open' by default, can be 'closed' after due date or manually
+            $table->enum('status', ['open', 'closed'])->default('open'); // status set to 'open' by default
             $table->timestamps();
         });
     }
