@@ -5,10 +5,9 @@ import {
     updateAdminUserRole,
     assignAdminSupervisor,
     fetchAdminLecturers
-} from "../../api/api"; // Make sure path is correct
-import "../../styles/manageUsers.css"; //
-// You'll likely need a modal component for editing roles/supervisors
-// import Modal from '../../components/Modal';
+} from "../../api/api"; 
+import "../../styles/manageUsers.css"; 
+
 
 function ManageUsers() {
     const [usersData, setUsersData] = useState({ data: [], current_page: 1, last_page: 1 }); // Store pagination data
@@ -18,7 +17,7 @@ function ManageUsers() {
     const [roleFilter, setRoleFilter] = useState('');
     const [lecturers, setLecturers] = useState([]);
 
-    // --- State for Modals (Example) ---
+    // State for Modals 
     const [showRoleModal, setShowRoleModal] = useState(false);
     const [showSupervisorModal, setShowSupervisorModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null); // User being edited
@@ -90,7 +89,7 @@ function ManageUsers() {
         }
     };
 
-    // --- Action Handlers ---
+    // Action Handlers 
 
     const handleDelete = async (userId, userName) => {
         if (window.confirm(`Are you sure you want to remove ${userName}?`)) {
