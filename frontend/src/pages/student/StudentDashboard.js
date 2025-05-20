@@ -1,10 +1,8 @@
-// src/pages/student/StudentDashboard.js (Assuming path)
-
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-// Import API functions: fetchTasks for upcoming, fetchTaskProgress for progress, fetchUser for welcome message
-import { fetchTasks, fetchTaskProgress, fetchUser } from "../../api/api"; // Adjust path
-import "../../styles/studentdashboard.css"; // Your dashboard styles
+
+import { fetchTasks, fetchTaskProgress, fetchUser } from "../../api/api"; 
+import "../../styles/studentdashboard.css";
 
 function StudentDashboard() {
   const [user, setUser] = useState(null); // State for user details
@@ -29,10 +27,7 @@ function StudentDashboard() {
 
         // --- Process User Data ---
         setUser(userData); // Store fetched user data in state
-        // Optionally update localStorage if you still need it elsewhere,
-        // but prefer using state derived from API for dashboard display.
-        // localStorage.setItem("user", JSON.stringify(userData));
-
+        
         // --- Process Progress Data ---
         setProgress(progressData.progress); // Store progress percentage
 
@@ -53,13 +48,10 @@ function StudentDashboard() {
          setError(`Failed to load dashboard: ${err.message}. Please try refreshing.`);
          // Handle specific errors, e.g., 401 Unauthorized might mean redirecting to login
          if (err.response?.status === 401) {
-             // Optional: Clear local storage and redirect
-             // localStorage.clear();
-             // navigate('/login');
+            
              setError('Session expired. Please log in again.');
          }
-         // Attempt to load user from localStorage as a fallback if API fails?
-         // Be cautious with this, might show stale data.
+         
           const storedUser = localStorage.getItem("user");
           if (storedUser && !user) { // Only if user state is still null
               try {
