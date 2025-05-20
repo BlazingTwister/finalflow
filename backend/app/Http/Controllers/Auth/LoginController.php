@@ -56,7 +56,7 @@ class LoginController extends Controller
         // Revoke the current access token
         $request->user()->currentAccessToken()->delete();
 
-        // Optionally clear session data if using sessions
+        
         session()->forget('user');
 
         return response()->json([
