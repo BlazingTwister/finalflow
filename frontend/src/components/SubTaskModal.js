@@ -1,9 +1,7 @@
-// src/components/tasks/SubTaskModal.js (Example Path)
-
 import React, { useState, useEffect } from 'react';
 // Import API functions needed within the modal
-import { updateSubTaskStatus, deleteSubTask, addSubTask } from '../api/api.js'; // Adjust path to your api.js
-import '../styles/SubTaskModal.css'; // We will create this CSS file next
+import { updateSubTaskStatus, deleteSubTask, addSubTask } from '../api/api.js'; 
+import '../styles/SubTaskModal.css'; 
 
 function SubTaskModal({ task, onClose, onSubTaskChange }) {
     // State for the list of sub-tasks displayed in the modal
@@ -32,7 +30,7 @@ function SubTaskModal({ task, onClose, onSubTaskChange }) {
     // If no task is provided (e.g., modal is closed), don't render anything
     if (!task) return null;
 
-    // --- Event Handlers ---
+    // Event Handlers 
 
     // Handles toggling the status of a sub-task
     const handleStatusChange = async (subTaskId, currentStatus) => {
@@ -50,14 +48,13 @@ function SubTaskModal({ task, onClose, onSubTaskChange }) {
                 )
             );
 
-            // Notify the parent component (StudentTasks) that a change occurred,
-            // passing the parent task ID and its latest status from the API response.
+            
             onSubTaskChange(task.id, result.parent_task_status);
 
         } catch (err) {
             console.error("Error updating sub-task status:", err);
             setError(`Failed to update sub-task: ${err.response?.data?.message || err.message}`);
-            // Optional: Revert optimistic update here if needed
+            
         } finally {
             setIsLoading(false); // Re-enable buttons
         }
@@ -126,7 +123,7 @@ function SubTaskModal({ task, onClose, onSubTaskChange }) {
         }
     };
 
-    // --- Render Logic ---
+    // Render Logic 
     return (
         // Modal Overlay: Covers the screen, closes modal on click outside content
         <div className="modal-overlay" onClick={onClose}>
