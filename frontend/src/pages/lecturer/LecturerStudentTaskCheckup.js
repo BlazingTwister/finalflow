@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { fetchLecturerStudents, fetchTasksForSupervisedStudent } from '../../api/api'; // Adjust path as needed
-import '../../styles/LecturerStudentTaskCheckup.css'; // We will create this CSS file
+import { fetchLecturerStudents, fetchTasksForSupervisedStudent } from '../../api/api'; 
+import '../../styles/LecturerStudentTaskCheckup.css'; 
 
 const LecturerStudentTaskCheckup = () => {
     const [supervisedStudents, setSupervisedStudents] = useState([]);
@@ -79,7 +79,7 @@ const LecturerStudentTaskCheckup = () => {
             {error && <p className="error-message">{error}</p>}
 
             {selectedStudent ? (
-                // ----- View for Selected Student's Tasks -----
+                // View for Selected Student's Tasks 
                 <div className="selected-student-tasks-view">
                     <button onClick={() => { setSelectedStudent(null); setStudentTasks([]); setError(null); }} className="back-button">
                         &larr; Back to Students List
@@ -123,7 +123,7 @@ const LecturerStudentTaskCheckup = () => {
                     )}
                 </div>
             ) : (
-                // ----- View for List of Supervised Students -----
+                // View for List of Supervised Students 
                 <>
                     {isLoadingStudents && <p className="loading-message">Loading supervised students...</p>}
                     {!isLoadingStudents && supervisedStudents.length === 0 && !error && (
@@ -135,7 +135,7 @@ const LecturerStudentTaskCheckup = () => {
                                 <div key={student.id} className="student-card-lecturer" onClick={() => handleSelectStudent(student)}>
                                     <h4>{student.fname} {student.lname}</h4>
                                     <p>{student.email}</p>
-                                    {/* You could add more info here, like number of tasks, last activity, etc. if available */}
+                                    
                                 </div>
                             ))}
                         </div>
