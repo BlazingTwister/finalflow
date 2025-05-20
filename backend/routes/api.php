@@ -67,7 +67,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     /// --- Lecturer Routes ---
     Route::prefix('lecturer')->middleware(['auth:sanctum'/*, 'isLecturer'*/])->group(function () {
 
-        // --- Submission Slot Management (Existing) ---
+        // --- Submission Slot Management ---
         Route::prefix('submission-slots')->group(function() {
             Route::get('/', [LecturerSubmissionSlotController::class, 'index']);
             Route::post('/', [LecturerSubmissionSlotController::class, 'store']);
@@ -81,9 +81,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/submission-files/{submissionFile}/download', [LecturerSubmissionSlotController::class, 'downloadFile']);
         });
 
-        // --- NEW: Student Task Check-up Route ---
-        // This route should be directly under the 'lecturer' prefix, not nested further
-        // unless intended. The path 'supervised-students/{student}/tasks' is relative to '/lecturer'.
+        // --- Student Task Check-up Route ---
         Route::get('supervised-students/{student}/tasks', [TaskController::class, 'getTasksForStudentByLecturer'])
             ->name('lecturer.student.tasks.show'); // Naming the route is good practice
 
