@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { fetchStudentAssignedSlots, submitStudentWork } from '../../api/api'; // Adjust path as needed
-import '../../styles/StudentSubmissions.css'; // Create this CSS file
+import { fetchStudentAssignedSlots, submitStudentWork } from '../../api/api'; 
+import '../../styles/StudentSubmissions.css'; 
 
 const StudentSubmissions = () => {
     const [assignedSlots, setAssignedSlots] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
-    const [selectedFiles, setSelectedFiles] = useState({}); // Store files per slot: { slotId: FileList }
+    const [selectedFiles, setSelectedFiles] = useState({}); // Store files per slot
 
     const clearMessages = () => {
         setError(null);
@@ -138,8 +138,7 @@ const StudentSubmissions = () => {
                         {/* Allow submission if slot is open, not past due, AND student hasn't submitted OR re-submissions are allowed (current backend logic allows multiple) */}
                         {slot.status === 'open' && !isSlotPastDue(slot) && (
                              // Simple condition: allow new submission if not yet submitted.
-                             // Or, if you want to allow re-submission always when open: remove !slot.has_submitted
-                            // !slot.has_submitted && ( // Uncomment this line if student can only submit ONCE
+                            
                             <div className="submission-form">
                                 <h4>Submit Your Work:</h4>
                                 <input 
@@ -156,7 +155,7 @@ const StudentSubmissions = () => {
                                     {isLoading ? 'Submitting...' : 'Submit Files'}
                                 </button>
                             </div>
-                            // ) // Uncomment this line if student can only submit ONCE
+                            
                         )}
                          {(slot.status === 'closed' || isSlotPastDue(slot)) && (!slot.has_submitted && (
                             <p className="info-message"><em>This slot is closed or past due. Submissions are no longer accepted.</em></p>
