@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Your existing Axios instance setup
+// Axios instance setup
 const api = axios.create({
-    baseURL: 'http://127.0.0.1:8000', // Your backend URL
+    baseURL: 'http://127.0.0.1:8000', // backend URL
     withCredentials: true, // Required for Sanctum CSRF
     // withXSRFToken: true, // Axios handles XSRF token automatically with withCredentials
     headers: {
@@ -17,8 +17,7 @@ export const fetchCsrfToken = async () => {
         await api.get('/sanctum/csrf-cookie');
     } catch (error) {
          console.error("Error fetching CSRF token:", error.response?.data || error.message, error);
-         // It's important to understand why this might fail.
-         // If it's consistent, requests requiring CSRF will fail.
+         
     }
 };
 
@@ -29,17 +28,10 @@ api.interceptors.request.use(async config => { // Make interceptor async
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
-    // For non-GET requests, ensure CSRF token is fresh.
-    // This is a more robust way than calling fetchCsrfToken before every single POST/PATCH etc.
-    // However, for login/register, explicit call is still good as no token exists yet.
+   
     if (config.method && config.method.toLowerCase() !== 'get' && !config.url.includes('/sanctum/csrf-cookie')) {
-        // Check if it's not a GET request and not the CSRF request itself
-        // You might want to refine this logic based on specific needs
-        // For instance, only call it if a certain amount of time has passed since the last call.
-        // For simplicity here, we call it.
-        // await fetchCsrfToken(); // Consider implications of awaiting here for all non-GET requests.
-                                // It might be better to call fetchCsrfToken explicitly in each state-changing API function.
-                                // The current implementation in individual functions is generally safer.
+        
+        // await fetchCsrfToken(); 
     }
     return config;
 }, error => {
@@ -47,7 +39,7 @@ api.interceptors.request.use(async config => { // Make interceptor async
 });
 
 
-// --- Existing Auth Functions (registerUser, loginUser - keep explicit fetchCsrfToken) ---
+//  Auth Functions (registerUser, loginUser - keep explicit fetchCsrfToken) 
 export const registerUser = async (formData) => {
     try {
         await fetchCsrfToken();
@@ -78,7 +70,7 @@ export const loginUser = async (formData) => {
 export const logoutUser = async () => {
     try {
         await fetchCsrfToken(); // Ensure CSRF token is available for POST request
-        const response = await api.post('/api/logout'); // Your Laravel logout route
+        const response = await api.post('/api/logout'); // logout route
 
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
@@ -94,7 +86,7 @@ export const logoutUser = async () => {
 };
 
 
-// --- Task Functions (addTask, updateTaskStatus, fetchTasks, deleteTask) ---
+// Task Functions (addTask, updateTaskStatus, fetchTasks, deleteTask) 
 export const addTask = async (taskData) => {
     try {
         await fetchCsrfToken();
@@ -143,7 +135,7 @@ export const deleteTask = async (taskId) => {
     }
 };
 
-// --- Sub-Task Functions (ensure CSRF) ---
+// Sub-Task Functions (ensure CSRF) 
 export const addSubTask = async (taskId, subTaskData) => {
     try {
         await fetchCsrfToken();
@@ -175,7 +167,7 @@ export const deleteSubTask = async (subTaskId) => {
     }
 };
 
-// --- Progress Function ---
+// Progress Function 
 export const fetchTaskProgress = async () => {
     try {
         const response = await api.get('/api/tasks/progress');
@@ -187,7 +179,7 @@ export const fetchTaskProgress = async () => {
     }
 };
 
- // --- User Fetch Function ---
+ // User Fetch Function 
  export const fetchUser = async () => {
     try {
         const response = await api.get('/api/user');
@@ -200,7 +192,7 @@ export const fetchTaskProgress = async () => {
 };
 
 
-// --- Admin User Management API Calls (ensure CSRF for state-changing) ---
+// Admin User Management API Calls (ensure CSRF for state-changing) 
 export const fetchAdminUsers = async (searchTerm = '', roleFilter = '', page = 1) => {
     try {
         const params = {};
@@ -261,10 +253,7 @@ export const assignAdminSupervisor = async (studentId, supervisorId) => {
 };
 
 
-// --- LECTURER SUBMISSION SLOT MANAGEMENT (from your uploaded api.js) ---
-// (fetchLecturerSubmissionSlots, createSubmissionSlot, fetchLecturerSubmissionSlotDetails, updateSubmissionSlot, deleteSubmissionSlot, postSlotToStudents, fetchLecturerStudents)
-// Ensure all state-changing ones (create, update, delete, post) call await fetchCsrfToken();
-
+// LECTURER SUBMISSION SLOT MANAGEMENT 
 export const fetchLecturerSubmissionSlots = async () => {
     // No CSRF needed for GET
     try {
@@ -301,8 +290,7 @@ export const fetchLecturerSubmissionSlotDetails = async (slotId) => {
 export const updateSubmissionSlot = async (slotId, slotData) => {
     try {
         await fetchCsrfToken();
-        // Laravel treats PUT and PATCH similarly for resource controllers if defined with Route::resource or Route::apiResource
-        // If your route is specifically Route::put, then this is fine.
+        
         const response = await api.put(`/api/lecturer/submission-slots/${slotId}`, slotData);
         return response.data;
     } catch (error) {
@@ -345,7 +333,7 @@ export const fetchLecturerStudents = async () => {
 };
 
 
-// --- NEW LECTURER ACTIONS ON STUDENT SUBMISSIONS ---
+// NEW LECTURER ACTIONS ON STUDENT SUBMISSIONS 
 /**
  * Acknowledge a student's submission.
  * @param {number} studentSubmissionId - The ID of the StudentSubmission record.
@@ -354,7 +342,7 @@ export const acknowledgeStudentSubmission = async (studentSubmissionId) => {
     try {
         await fetchCsrfToken();
         const response = await api.patch(`/api/lecturer/student-submissions/${studentSubmissionId}/acknowledge`);
-        return response.data; // Expects { message: '...', submission: { ... } }
+        return response.data; 
     } catch (error) {
         console.error(`Error acknowledging submission ${studentSubmissionId}:`, error.response?.data || error.message);
         throw error.response?.data || error;
@@ -370,7 +358,7 @@ export const commentOnStudentSubmission = async (studentSubmissionId, commentDat
     try {
         await fetchCsrfToken();
         const response = await api.post(`/api/lecturer/student-submissions/${studentSubmissionId}/comment`, commentData);
-        return response.data; // Expects { message: '...', submission: { ... } }
+        return response.data; 
     } catch (error) {
         console.error(`Error commenting on submission ${studentSubmissionId}:`, error.response?.data || error.message);
         throw error.response?.data || error;
@@ -386,7 +374,7 @@ export const downloadSubmissionFile = async (submissionFileId) => {
         // No CSRF needed for GET (download)
         // The response should be a blob or trigger a download
         const response = await api.get(`/api/lecturer/submission-files/${submissionFileId}/download`, {
-            responseType: 'blob', // Important for file downloads
+            responseType: 'blob', 
         });
         // Create a link and trigger download
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -409,8 +397,7 @@ export const downloadSubmissionFile = async (submissionFileId) => {
         return { success: true, message: 'File download initiated.' };
     } catch (error) {
         console.error(`Error downloading file ${submissionFileId}:`, error.response?.data || error.message);
-        // If responseType is blob, error.response.data might be a blob that needs to be parsed
-        // For simplicity, we'll throw a generic error or the error object if available.
+        
         if (error.response && error.response.data instanceof Blob) {
             const errText = await error.response.data.text();
             const errJson = JSON.parse(errText);
@@ -422,7 +409,7 @@ export const downloadSubmissionFile = async (submissionFileId) => {
 };
 
 
-// --- NEW STUDENT SUBMISSION FUNCTIONS ---
+// NEW STUDENT SUBMISSION FUNCTIONS 
 /**
  * Fetch submission slots assigned to the current student.
  */
@@ -430,7 +417,7 @@ export const fetchStudentAssignedSlots = async () => {
     try {
         // No CSRF needed for GET
         const response = await api.get('/api/student/submission-slots');
-        return response.data; // Expects an array of slot objects with submission details
+        return response.data; 
     } catch (error) {
         console.error("Error fetching student assigned slots:", error.response?.data || error.message);
         throw error.response?.data || error;
@@ -445,14 +432,13 @@ export const fetchStudentAssignedSlots = async () => {
 export const submitStudentWork = async (slotId, formData) => {
     try {
         await fetchCsrfToken();
-        // When sending FormData, Content-Type header is set automatically by browser with boundary
-        // So, remove the default 'application/json' for this specific request.
+        
         const response = await api.post(`/api/student/submission-slots/${slotId}/submit`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
-        return response.data; // Expects { message: '...', submission_details: {...} }
+        return response.data; 
     } catch (error) {
         console.error(`Error submitting work for slot ${slotId}:`, error.response?.data || error.message);
         throw error.response?.data || error;
@@ -473,7 +459,7 @@ export const fetchMyStudentSubmissionDetails = async (studentSubmissionId) => {
     }
 };
 
-// --- NEW API FUNCTION FOR LECTURER TO FETCH A STUDENT'S TASKS ---
+// NEW API FUNCTION FOR LECTURER TO FETCH A STUDENT'S TASKS 
 /**
  * Fetch all tasks for a specific supervised student.
  * @param {number} studentId - The ID of the student.
