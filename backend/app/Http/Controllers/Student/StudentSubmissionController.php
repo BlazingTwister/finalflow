@@ -97,14 +97,13 @@ class StudentSubmissionController extends Controller
             return response()->json(['errors' => $e->errors()], 422);
         }
 
-        // (Optional) Handle re-submissions: Delete old submission and files, or version them.
+        
         // For simplicity, this example allows creating a new submission record.
         // If only one submission is allowed, you'd first check and potentially block or update.
         $existingSubmission = StudentSubmission::where('submission_slot_id', $submissionSlot->id)
                                                ->where('student_id', $student->id)
                                                ->first();
         if ($existingSubmission) {
-            // Example: If you want to prevent re-submission after one attempt.
             // return response()->json(['error' => 'You have already submitted to this slot.'], 400);
             // Or, if allowing overwrite: delete old files and the submission record.
             // $existingSubmission->files()->each(function($file) {
